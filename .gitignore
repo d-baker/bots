@@ -1,0 +1,10 @@
+*.log
+*.swp
+*.pyc
+*.pkl
+
+*resources
+*twitterbot
+*venv
+
+.directory

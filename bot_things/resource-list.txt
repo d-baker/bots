@@ -1,0 +1,4 @@
+__init__.py
+config.py
+everyword.txt
+tweeted_words.txt 

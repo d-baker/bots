@@ -1,0 +1,7 @@
+NOTE this is incomplete, as the bot is incomplete.
+
+__init__.py
+config.py
+basicwords.txt
+botlang-sentences.txt
+dictionary.json
