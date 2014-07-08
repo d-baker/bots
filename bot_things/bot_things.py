@@ -26,12 +26,26 @@ def gen():
     tweeted_words.write(word + "\n")
 
     # bot variation
-    special_prefixes = ("computer ", "robot ", "processor ", "syntax ", "compiler ")
+    special_prefixes = ("computer ", "robot ", "processor ", "syntax ", "compiler ", "algorithm ")
+
+    phrase = ""
+
     if random.random() < 0.02:
-        prefix = random.choice(special_prefixes)
+
+        if random.random() < 0.1:
+            phrase = random.choice(special_prefixes) + " " + word
+        else:
+            phrase = word + " " + random.choice(special_prefixes)
+
+    elif random.random() < 0.1:
+        phrase = word + " bot"
+
     else:
-        prefix = "bot "
-
-    return prefix + word
+        phrase = "bot " + word
 
 
+    return phrase
+
+
+if __name__ == "__main__":
+    print gen()
