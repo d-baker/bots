@@ -33,13 +33,15 @@ class Botlang (TwitterBot):
         ######################################
         # SEMI-OPTIONAL: OTHER CONFIG STUFF! #
         ######################################
+        
+        MINS, HOURS = 60, 60 * 60
 
         # how often to tweet, in seconds
-        self.config['tweet_interval'] = 60 * 60     # default: 30 minutes
+        #self.config['tweet_interval'] = 60 * 60     # default: 30 minutes
 
         # use this to define a (min, max) random range of how often to tweet
         # e.g., self.config['tweet_interval_range'] = (5*60, 10*60) # tweets every 5-10 minutes
-        self.config['tweet_interval_range'] = None
+        self.config['tweet_interval_range'] = (30 * MINS, 3 * HOURS)
 
         # only reply to tweets that specifically mention the bot
         self.config['reply_direct_mention_only'] = False
