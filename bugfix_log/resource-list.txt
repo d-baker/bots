@@ -1,0 +1,8 @@
+__init__.py
+formats.txt
+singular.txt
+plural.txt
+verb.txt
+verbing.txt
+config.py
+ 
