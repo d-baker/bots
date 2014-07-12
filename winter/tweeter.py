@@ -82,7 +82,7 @@ class Bot(TwitterBot):
         if random.random() > 0.3:
             text = self.winter.rainstorm()
         else:
-            text = self.winter.snowfield()
+            text = self.winter.snowstorm()
 
         self.post_tweet(text)
 
