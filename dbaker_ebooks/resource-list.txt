@@ -1,0 +1,8 @@
+/
+	auth.json
+
+/corpus
+	dorotheabaker.json
+
+/model
+	dorotheabaker.model
