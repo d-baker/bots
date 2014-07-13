@@ -10,12 +10,12 @@ def tweet():
 
     tweet = ""
     bot = Winter()
-    if random.random() > 0.3:
-        tweet = bot.snowstorm()
-    else:
-        tweet = bot.rainstorm()
+    #if random.random() > 0.3:
+    #    tweet = bot.snowstorm()
+    #else:
+    #    tweet = bot.rainstorm()
 
-    #tweet = bot.rainstorm()
+    tweet = bot.rainstorm()
     #tweet = bot.snowstorm()
 
     t.statuses.update(status=tweet)

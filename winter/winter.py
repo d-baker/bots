@@ -24,10 +24,10 @@ class Winter:
         chance = random.random()
 
         if chance > 0.8:
-            rainstorm += (" " * random.randint(3, 10)) + "⚡" # lightning
+            rainstorm += ("\u00a0" * random.randint(3, 10)) + "⚡" # lightning
 
-        # 140 minus possible extra 2 chars (unicode) added later
-        while sum(1 if c in string.whitespace else 2 for c in rainstorm) < 138:
+        # 140 minus possible extra 2 chars (unicode) added later minus up to 20 unicode spaces
+        while sum(1 if c in string.whitespace else 2 for c in rainstorm) < 108:
 
             rainstorm += "{cloud_spaces}{cloud_chars}{cloud_spaces}{cloud_newlines}{cloud_newlines}{droplet_spaces}{droplets}{droplet_spaces}{droplet_newlines}".format(
                cloud_spaces=" " * random.randint(1, 10),
