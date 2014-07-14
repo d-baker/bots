@@ -1,6 +1,5 @@
 # encoding: utf-8
 from __future__ import unicode_literals
-from datetime import datetime
 from moondate import MoonDate
 import json
 import os
@@ -18,7 +17,7 @@ def tweet(emoji):
 
 
 def run():
-    moon = MoonDate()
+    moon = MoonDate("southern")
 
     ############################ STATE READING #############################
 

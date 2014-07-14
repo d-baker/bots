@@ -4,22 +4,43 @@ from datetime import datetime
 class MoonDate:
     HALF_WEEK = 7/2
 
-    PHASES = [
-        "\U0001f311", #new moon
-        "\U0001f312", #waxing crescent
-        "\U0001f313", #first quarter
-        "\U0001f314", #waxing gibbous
-        "\U0001f315", #full moon
-        "\U0001f316", #waning gibbous
-        "\U0001f317", #last quarter
-        "\U0001f318", #waning crescent
-    ]
+    def __init__(self, day = None, hemisphere = None):
 
-    def __init__(self):
-        self.month_day = datetime.today().day
+        # current day is default
+        if day is None:
+            self.month_day = datetime.today().day
+        else:
+            self.month_day = day
+
         self.month = datetime.today().month
         self.year = datetime.today().year
         self.last_month_day = calendar.monthrange(self.year, self.month)[1]
+
+        # northern hemisphere is default
+        self.emoji = [
+            "\U0001f311", #new moon
+            "\U0001f312", #waxing crescent
+            "\U0001f313", #first quarter
+            "\U0001f314", #waxing gibbous
+            "\U0001f315", #full moon
+            "\U0001f316", #waning gibbous
+            "\U0001f317", #last quarter
+            "\U0001f318", #waning crescent
+        ]
+
+        # change order of emoji for southern hemisphere
+        if hemisphere == "southern":
+            self.emoji = [
+                "\U0001f311", #new moon
+                "\U0001f318", #waxing crescent
+                "\U0001f317", #first quarter
+                "\U0001f316", #waxing gibbous
+                "\U0001f315", #full moon
+                "\U0001f314", #waning gibbous
+                "\U0001f313", #last quarter
+                "\U0001f312", #waning crescent
+            ]
+
 
     def get_cur_phase(self):
         if self.new_moon():
@@ -43,21 +64,21 @@ class MoonDate:
         cur_phase = "oops, something went wrong"
 
         if self.new_moon():
-            cur_phase = MoonDate.PHASES[0]
+            cur_phase = self.emoji[0]
         elif self.waxing_cresc():
-            cur_phase = MoonDate.PHASES[1]
+            cur_phase = self.emoji[1]
         elif self.first_quart():
-            cur_phase = MoonDate.PHASES[2]
+            cur_phase = self.emoji[2]
         elif self.waxing_gibb():
-            cur_phase = MoonDate.PHASES[3]
+            cur_phase = self.emoji[3]
         elif self.full_moon():
-            cur_phase = MoonDate.PHASES[4]
+            cur_phase = self.emoji[4]
         elif self.waning_gibb():
-            cur_phase = MoonDate.PHASES[5]
+            cur_phase = self.emoji[5]
         elif self.last_quart():
-            cur_phase = MoonDate.PHASES[6] 
+            cur_phase = self.emoji[6] 
         elif self.waning_cresc():
-            cur_phase = MoonDate.PHASES[7]
+            cur_phase = self.emoji[7]
 
         return cur_phase
 
