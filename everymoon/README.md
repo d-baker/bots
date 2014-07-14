@@ -8,7 +8,7 @@ A Python class for lunar phases, which can currently
 
 Installation
 --------------
-download the raw file [here]() and put it in the directory you want to work in. easy!
+download the raw file [here](https://raw.githubusercontent.com/d-baker/bots/master/everymoon/moondate.py) and put it in the directory you want to work in. easy!
 
 Usage
 --------
