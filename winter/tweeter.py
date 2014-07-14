@@ -79,7 +79,7 @@ class Bot(TwitterBot):
 
 
     def on_scheduled_tweet(self):
-        if random.random() > 0.3:
+        if random.random() > 0.2:
             text = self.winter.snowstorm()
         else:
             text = self.winter.rainstorm()
