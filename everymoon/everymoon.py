@@ -42,6 +42,7 @@ def run():
 
     emoji = moon.get_emoji()
     tweet(emoji)
+    moon.log("info", "tweeted {phase} emoji".format(phase=moon.get_cur_phase()))
     state[len(state) - 1]["tweeted"] = True
 
 

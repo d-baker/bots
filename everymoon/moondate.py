@@ -1,10 +1,12 @@
+#encoding: utf-8
+from __future__ import unicode_literals
 import calendar
 from datetime import datetime
 
 class MoonDate:
     HALF_WEEK = 7/2
 
-    def __init__(self, day = None, hemisphere = None):
+    def __init__(self, hemisphere, day = None):
 
         # current day is default
         if day is None:
@@ -16,20 +18,21 @@ class MoonDate:
         self.year = datetime.today().year
         self.last_month_day = calendar.monthrange(self.year, self.month)[1]
 
-        # northern hemisphere is default
-        self.emoji = [
-            "\U0001f311", #new moon
-            "\U0001f312", #waxing crescent
-            "\U0001f313", #first quarter
-            "\U0001f314", #waxing gibbous
-            "\U0001f315", #full moon
-            "\U0001f316", #waning gibbous
-            "\U0001f317", #last quarter
-            "\U0001f318", #waning crescent
-        ]
+        if hemisphere == "southern": # change order of emoji for southern hemisphere
 
-        # change order of emoji for southern hemisphere
-        if hemisphere == "southern":
+            self.emoji = [
+                "\U0001f311", #new moon
+                "\U0001f312", #waxing crescent
+                "\U0001f313", #first quarter
+                "\U0001f314", #waxing gibbous
+                "\U0001f315", #full moon
+                "\U0001f316", #waning gibbous
+                "\U0001f317", #last quarter
+                "\U0001f318", #waning crescent
+            ]
+
+        else: # northern hemisphere is default
+
             self.emoji = [
                 "\U0001f311", #new moon
                 "\U0001f318", #waxing crescent
@@ -41,6 +44,9 @@ class MoonDate:
                 "\U0001f312", #waning crescent
             ]
 
+
+    def log(self, tag, message):
+        print("{t}: {m}".format(t=tag, m=message))
 
     def get_cur_phase(self):
         if self.new_moon():
