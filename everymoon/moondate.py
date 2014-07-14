@@ -1,22 +1,24 @@
 #encoding: utf-8
 from __future__ import unicode_literals
 import calendar
-from datetime import datetime
+from datetime import datetime, date
 
 class MoonDate:
     HALF_WEEK = 7/2
 
-    def __init__(self, hemisphere, day = None):
+    def __init__(self, hemisphere, mdate = None):
 
-        # current day is default
-        if day is None:
+        # current date is default
+        if mdate is None:
             self.month_day = datetime.today().day
+            self.month = datetime.today().month
+            self.year = datetime.today().year
+            self.last_month_day = calendar.monthrange(self.year, self.month)[1]
         else:
-            self.month_day = day
-
-        self.month = datetime.today().month
-        self.year = datetime.today().year
-        self.last_month_day = calendar.monthrange(self.year, self.month)[1]
+            self.month_day = mdate.day
+            self.month = mdate.month
+            self.year = mdate.year
+            self.last_month_day = calendar.monthrange(self.year, self.month)[1]
 
         if hemisphere == "southern": # change order of emoji for southern hemisphere
 
@@ -48,7 +50,7 @@ class MoonDate:
     def log(self, tag, message):
         print("{t}: {m}".format(t=tag, m=message))
 
-    def get_cur_phase(self):
+    def get_phase(self):
         if self.new_moon():
             return "new moon"
         elif self.waning_cresc(): 
@@ -67,26 +69,26 @@ class MoonDate:
             return "waning crescent"
 
     def get_emoji(self):
-        cur_phase = "oops, something went wrong"
+        phase = "oops, something went wrong"
 
         if self.new_moon():
-            cur_phase = self.emoji[0]
+            phase = self.emoji[0]
         elif self.waxing_cresc():
-            cur_phase = self.emoji[1]
+            phase = self.emoji[1]
         elif self.first_quart():
-            cur_phase = self.emoji[2]
+            phase = self.emoji[2]
         elif self.waxing_gibb():
-            cur_phase = self.emoji[3]
+            phase = self.emoji[3]
         elif self.full_moon():
-            cur_phase = self.emoji[4]
+            phase = self.emoji[4]
         elif self.waning_gibb():
-            cur_phase = self.emoji[5]
+            phase = self.emoji[5]
         elif self.last_quart():
-            cur_phase = self.emoji[6] 
+            phase = self.emoji[6] 
         elif self.waning_cresc():
-            cur_phase = self.emoji[7]
+            phase = self.emoji[7]
 
-        return cur_phase
+        return phase
 
     def day_between(self, lower, upper):
         if self.month_day >= lower and self.month_day < upper:
@@ -133,4 +135,5 @@ class MoonDate:
         if self.day_between(21 + MoonDate.HALF_WEEK, self.last_month_day):
             return True
         return False
+
 

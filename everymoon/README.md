@@ -15,11 +15,13 @@ Usage
 
 ```
 from moondate import MoonDate
+from datetime import date
 ...
-<your_var_name> = MoonDate(hemisphere, [date])
+your_date = date(year, month, day)
+<your_var_name> = MoonDate(hemisphere, [mdate=your_date])
 ```
 
-`date` is a datetime object and is optional - if you don't specify a date, it defaults to today's date. (disclaimer: I haven't tested this yet)
+`mdate` (stands for 'moondate', to avoid naming conflicts) is a date object and is optional - if you don't specify a date, it defaults to today's date.
 `hemisphere` is a string, which can be either "southern" or "northern".
 
 for example usage of MoonDate take a look at everymoon.py, a twitterbot which tweets moon emoji based on the current lunar phase (that's what I wrote it for).

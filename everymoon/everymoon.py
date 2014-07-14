@@ -20,7 +20,7 @@ def run():
 
     ############################ STATE READING #############################
 
-    state = [{"phase": moon.get_cur_phase(), "tweeted": False}]
+    state = [{"phase": moon.get_phase(), "tweeted": False}]
 
     # open file if it exists and isn't empty, otherwise create and write to it
     if os.path.exists("resources/state.json") and os.stat("resources/state.json").st_size > 0:
@@ -33,7 +33,7 @@ def run():
             json.dump(state, fp)
 
     for d in state:
-        if d["phase"] == moon.get_cur_phase() and d["tweeted"] == True:
+        if d["phase"] == moon.get_phase() and d["tweeted"] == True:
             print "already tweeted, skipping"
             return
 
@@ -42,14 +42,14 @@ def run():
 
     emoji = moon.get_emoji()
     tweet(emoji)
-    moon.log("info", "tweeted {phase} emoji".format(phase=moon.get_cur_phase()))
+    moon.log("info", "tweeted {phase} emoji".format(phase=moon.get_phase()))
     state[len(state) - 1]["tweeted"] = True
 
 
     ############################ STATE SAVING #############################
 
     with open ("resources/state.json", "w") as fp:
-        if moon.get_cur_phase() == "new moon": # delete file and start over
+        if moon.get_phase() == "new moon": # delete file and start over
             os.remove("resources/state.json")
 
         json.dump(state, fp)
