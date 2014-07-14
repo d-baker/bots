@@ -4,16 +4,15 @@ from moondate import MoonDate
 import json
 import os
 
-#from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 import twitter
 
 
 def tweet(emoji):
-    #auth = twitter.OAuth(TOKEN, SECRET, CONSUMER_KEY, CONSUMER_SECRET)
-    #t = twitter.Twitter(auth=auth)
+    auth = twitter.OAuth(TOKEN, SECRET, CONSUMER_KEY, CONSUMER_SECRET)
+    t = twitter.Twitter(auth=auth)
 
-    #t.statuses.update(status=emoji)
-    print emoji
+    t.statuses.update(status=emoji)
 
 
 def run():
@@ -32,8 +31,6 @@ def run():
     else:
         with open ("resources/state.json", "w") as fp:
             json.dump(state, fp)
-
-    #print state
 
     for d in state:
         if d["phase"] == moon.get_cur_phase() and d["tweeted"] == True:
