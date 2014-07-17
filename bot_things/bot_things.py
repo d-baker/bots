@@ -31,15 +31,7 @@ def gen():
     phrase = ""
 
     if random.random() < 0.02:
-
-        if random.random() < 0.1:
-            phrase = random.choice(special_prefixes) + " " + word
-        else:
-            phrase = word + " " + random.choice(special_prefixes)
-
-    elif random.random() < 0.1:
-        phrase = word + " bot"
-
+        phrase = random.choice(special_prefixes) + " " + word
     else:
         phrase = "bot " + word
 
