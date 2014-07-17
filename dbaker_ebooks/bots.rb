@@ -55,7 +55,7 @@ class GenBot
       # Avoid infinite reply chains (very small chance of crosstalk)
       next if tweet[:user][:screen_name].include?(ROBOT_ID) && rand > 0.05
 
-      tokens = NLP.tokenize(tweet[:text])
+      tokens = NLP.tokenize(tweet)
 
       very_interesting = tokens.find_all { |t| @top100.include?(t.downcase) }.length > 2
       special = tokens.find { |t| SPECIAL_WORDS.include?(t) }
@@ -109,7 +109,7 @@ class GenBot
       next if rand(15) != 0
       
       tweet = @model.make_statement
-      tokens = NLP.tokenize(tweet[:text])
+      tokens = NLP.tokenize(tweet)
 
       very_interesting = tokens.find_all { |t| @top100.include?(t.downcase) }.length > 2
       special = tokens.find { |t| SPECIAL_WORDS.include?(t) }

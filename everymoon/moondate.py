@@ -24,19 +24,6 @@ class MoonDate:
 
             self.emoji = [
                 "\U0001f311", #new moon
-                "\U0001f312", #waxing crescent
-                "\U0001f313", #first quarter
-                "\U0001f314", #waxing gibbous
-                "\U0001f315", #full moon
-                "\U0001f316", #waning gibbous
-                "\U0001f317", #last quarter
-                "\U0001f318", #waning crescent
-            ]
-
-        else: # northern hemisphere is default
-
-            self.emoji = [
-                "\U0001f311", #new moon
                 "\U0001f318", #waxing crescent
                 "\U0001f317", #first quarter
                 "\U0001f316", #waxing gibbous
@@ -44,6 +31,19 @@ class MoonDate:
                 "\U0001f314", #waning gibbous
                 "\U0001f313", #last quarter
                 "\U0001f312", #waning crescent
+            ]
+
+        else: # northern hemisphere is default
+
+            self.emoji = [
+                "\U0001f311", #new moon
+                "\U0001f312", #waxing crescent
+                "\U0001f313", #first quarter
+                "\U0001f314", #waxing gibbous
+                "\U0001f315", #full moon
+                "\U0001f316", #waning gibbous
+                "\U0001f317", #last quarter
+                "\U0001f318", #waning crescent
             ]
 
 
