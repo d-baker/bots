@@ -48,7 +48,8 @@ class MoonDate:
 
 
     def log(self, tag, message):
-        print("{t}: {m}".format(t=tag, m=message))
+        today = "{day}-{month}-{year}".format(day=self.month_day, month=self.month, year=self.year)
+        print("{d} | {t}: {m}".format(d=today, t=tag, m=message))
 
     def get_phase(self):
         if self.new_moon():
