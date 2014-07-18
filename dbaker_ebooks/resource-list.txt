@@ -1,5 +1,8 @@
-/
+/resources
 	auth.json
+	bffs.txt
+	boring.txt
+	special.txt
 
 /corpus
 	dorotheabaker.json

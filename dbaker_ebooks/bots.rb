@@ -3,7 +3,7 @@
 require 'twitter_ebooks'
 include Ebooks
 
-AUTH = JSON.parse(File.read("auth.json"), symbolize_names: true)
+AUTH = JSON.parse(File.read("resources/auth.json"), symbolize_names: true)
 CONSUMER_KEY = AUTH[:consumer_key]
 CONSUMER_SECRET = AUTH[:consumer_secret]
 OATH_TOKEN = AUTH[:oauth_token] # oauth token for ebooks account
