@@ -140,7 +140,7 @@ class GenBot
       end
   
       #$have_talked = {}
-    end #huh?
+    end
   end
   
     def reply(tweet, meta)
@@ -188,15 +188,15 @@ class GenBot
       @bot.twitter.retweet(tweet[:id])
     end
   end
-  end # huh?
+end
 
-  def make_bot(bot, modelname)
-    GenBot.new(bot, modelname)
-  end
+def make_bot(bot, modelname)
+  GenBot.new(bot, modelname)
+end
 
-  Ebooks::Bot.new(TWITTER_USERNAME) do |bot|
-    bot.oauth_token = OATH_TOKEN
-    bot.oauth_token_secret = OAUTH_TOKEN_SECRET
+Ebooks::Bot.new(TWITTER_USERNAME) do |bot|
+  bot.oauth_token = OATH_TOKEN
+  bot.oauth_token_secret = OAUTH_TOKEN_SECRET
 
-    make_bot(bot, TEXT_MODEL_NAME)
-  end
+  make_bot(bot, TEXT_MODEL_NAME)
+end
