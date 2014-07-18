@@ -10,7 +10,7 @@ import json
 import os
 
 ENGLISH_WORDS = list(open("resources/basicwords.txt", "r").read().split())
-MAX_SYLLABLES = 4
+MAX_SYLLABLES = 5
 
 class Bot:
     def __init__(self):

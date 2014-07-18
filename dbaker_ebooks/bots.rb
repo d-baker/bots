@@ -13,8 +13,11 @@ TWITTER_USERNAME = "dbaker_ebooks" # Ebooks account username
 TEXT_MODEL_NAME = "dorotheabaker" # This should be the name of the text model
 
 DELAY = 2..30 # Simulated human reply delay range in seconds
-#BLACKLIST = ['insomnius', 'upulie'] # Grumpy users to avoid interaction with
-SPECIAL_WORDS = ["bot", "b o t", "metal"]
+BLACKLIST = [] # Grumpy users to avoid interaction with
+
+# TODO put wordlists etc in separate file and import
+SPECIAL_WORDS = ["bot", "b o t", "metal", "Bach", "minimalism", "omg"]
+SPECIAL_USERS = ["horse_inky", "inky", "thricedotted", "thricebotted", "katierosepipkin", "negatendo", "negatendo_ebooks", "wikisext", "oliviataters", "mstea_ebooks"]
 
 # Track who we've randomly interacted with globally
 $have_talked = {}
@@ -35,8 +38,8 @@ class GenBot
 
     # TODO
     #def boring?(text)
-     #   tokens = Ebooks::NLP.tokenize(text.downcase.gsub "\u2019", "'")
-      #  !!(tokens.find { |t| @boring_keywords.include? t })
+    #   tokens = Ebooks::NLP.tokenize(text.downcase.gsub "\u2019", "'")
+    #   !!(tokens.find { |t| @boring_keywords.include? t })
     #end
 
     #bot.on_message do |dm|
@@ -45,17 +48,18 @@ class GenBot
     #  end
     #end
 
-    bot.on_follow do |user|
-      #bot.delay DELAY do
-       # bot.follow user[:screen_name]
-      #end
-    end
+    #bot.on_follow do |user|
+    #  #bot.delay DELAY do
+    #   # bot.follow user[:screen_name]
+    #  #end
+    #end
 
+    # TODO this doesn't seem to be including the @ tag
     bot.on_mention do |tweet, meta|
       # Avoid infinite reply chains (very small chance of crosstalk)
       next if tweet[:user][:screen_name].include?(ROBOT_ID) && rand > 0.05
 
-      tokens = NLP.tokenize(tweet)
+      tokens = NLP.tokenize(tweet[:text])
 
       very_interesting = tokens.find_all { |t| @top100.include?(t.downcase) }.length > 2
       special = tokens.find { |t| SPECIAL_WORDS.include?(t) }
@@ -65,58 +69,61 @@ class GenBot
       end
 
       reply(tweet, meta)
-
     end
 
     bot.on_timeline do |tweet, meta|
-      #next if tweet[:retweeted_status] || tweet[:text].start_with?('RT')
-      #next if BLACKLIST.include?(tweet[:user][:screen_name])
+      next if tweet[:retweeted_status] || tweet[:text].start_with?('RT')
+      next if BLACKLIST.include?(tweet[:user][:screen_name])
 
-      #tokens = NLP.tokenize(tweet[:text])
+      tokens = NLP.tokenize(tweet[:text])
 
-      ## We calculate unprompted interaction probability by how well a
-      ## tweet matches our keywords
-      #interesting = tokens.find { |t| @top100.include?(t.downcase) }
-      #very_interesting = tokens.find_all { |t| @top50.include?(t.downcase) }.length > 2
-      #special = tokens.find { |t| SPECIAL_WORDS.include?(t) }
+      # We calculate unprompted interaction probability by how well a
+      # tweet matches our keywords
+      interesting = tokens.find { |t| @top100.include?(t.downcase) }
+      very_interesting = tokens.find_all { |t| @top50.include?(t.downcase) }.length > 2
+      special = tokens.find { |t| SPECIAL_WORDS.include?(t) }
 
-      #if special
-      #  favorite(tweet)
-      #  favd = true # Mark this tweet as favorited
+      if special
+        favorite(tweet)
+        favd = true # Mark this tweet as favorited
 
-      #  bot.delay DELAY do
-      #    bot.follow tweet[:user][:screen_name]
-      #  end
-      #end
+        bot.delay DELAY do
+          bot.follow tweet[:user][:screen_name]
+        end
+      end
 
-      ## Any given user will receive at most one random interaction per day
-      ## (barring special cases)
-      #next if $have_talked[tweet[:user][:screen_name]]
-      #$have_talked[tweet[:user][:screen_name]] = true
+      # Any given user will receive at most one random interaction per day
+      # (barring special cases)
+      next if $have_talked[tweet[:user][:screen_name]]
+      $have_talked[tweet[:user][:screen_name]] = true
 
-      #if very_interesting || special
-      #  favorite(tweet) if (rand < 0.5 && !favd) # Don't fav the tweet if we did earlier
-      #  retweet(tweet) if rand < 0.1
-      #  reply(tweet, meta) if rand < 0.1
-      #elsif interesting
-      #  favorite(tweet) if rand < 0.1
-      #  reply(tweet, meta) if rand < 0.05
-      #end
+      if very_interesting || special
+        favorite(tweet) if (rand < 0.5 && !favd) # Don't fav the tweet if we did earlier
+        #retweet(tweet) if rand < 0.1
+        reply(tweet, meta) if rand < 0.1
+      elsif interesting
+        favorite(tweet) if rand < 0.1
+        #reply(tweet, meta) if rand < 0.05
+      end
     end
 
     # Schedule a main tweet for every day at midnight
-    bot.scheduler.every '5m', :first_in => '5s' do
-      next if rand(15) != 0
-      
+    bot.scheduler.every '3m', :first_in => '5s' do
+      #next if rand(10) != 0
+
       tweet = @model.make_statement
       tokens = NLP.tokenize(tweet)
 
       very_interesting = tokens.find_all { |t| @top100.include?(t.downcase) }.length > 2
       special = tokens.find { |t| SPECIAL_WORDS.include?(t) }
 
-      #if very_interesting || special
-        bot.tweet tweet
-      #end
+      if very_interesting || special
+        @bot.tweet tweet
+      elsif rand(10) < 3
+        @bot.tweet tweet
+      else
+        @bot.log "not tweeting \"#{tweet}\", too boring (maybe?)"
+      end
 
       #$have_talked = {}
     end
@@ -131,16 +138,26 @@ class GenBot
         end
     end
 
-      #tokens = NLP.tokenize(resp)
-      #very_interesting = tokens.find_all { |t| @top100.include?(t.downcase) }.length > 2
-      #special = tokens.find { |t| SPECIAL_WORDS.include?(t) }
+      tokens = NLP.tokenize(resp)
+      very_interesting = tokens.find_all { |t| @top100.include?(t.downcase) }.length > 2
+      special = tokens.find { |t| SPECIAL_WORDS.include?(t) }
 
-      #if very_interesting || special
+      bff = SPECIAL_USERS.include?(tweet[:user])
+
+      if (very_interesting || special) || bff
         @bot.delay DELAY do
           @bot.reply tweet, meta[:reply_prefix] + resp
           @bot.log "Responded to #{tweet[:user]} with #{resp}"
         end
-      #end
+      elsif rand(10) < 3
+        @bot.delay DELAY do
+          @bot.reply tweet, meta[:reply_prefix] + resp
+          @bot.log "Responded to #{tweet[:user]} with #{resp}"
+        end
+      else
+        @bot.log "not replying with \"#{tweet}\", too boring (maybe?)"
+        @bot.favorite meta # if last mention not replied to, fave it instead (just to be nice)
+      end
   end
 
   def favorite(tweet)
