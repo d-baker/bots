@@ -1,4 +1,6 @@
 __init__.py
 config.py
+nouns.txt
+adjectives.txt
 everyword.txt
 tweeted_words.txt 
