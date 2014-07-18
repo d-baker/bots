@@ -76,7 +76,10 @@ class GenBot
         @bot.favorite(tweet)
       end
   
-      reply(tweet, meta)
+      if rand < 0.8:
+        reply(tweet, meta)
+      else:
+        puts("abandoning conversation cause bored")
     end
   
     bot.on_timeline do |tweet, meta|
