@@ -92,11 +92,10 @@ class GenBot
       # We calculate unprompted interaction probability by how well a
       # tweet matches our keywords
       interesting = tokens.find { |t| @top100.include?(t.downcase) }
-      # TODO this is causing errors
       very_interesting = tokens.find_all { |t| @top20.include?(t.downcase) }.length > 2
       special = tokens.find { |t| SPECIAL_WORDS.include?(t) }
   
-      if special || (SPECIAL_USERS.include?(tweet[:user][:screen_name]) && rand(10) < 2)
+      if special || interesting || very_interesting || (SPECIAL_USERS.include?(tweet[:user][:screen_name]) && rand(10) <= 4)
         @bot.favorite(tweet)
         favd = true # Mark this tweet as favorited
   
