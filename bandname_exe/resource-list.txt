@@ -5,3 +5,5 @@ of_prefixes.txt
 the_postfixes.txt
 the_prefixes.txt 
 tweeted.text
+adjectives.txt
+nouns.txt
