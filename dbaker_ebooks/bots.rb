@@ -9,11 +9,11 @@ CONSUMER_SECRET = AUTH[:consumer_secret]
 OATH_TOKEN = AUTH[:oauth_token] # oauth token for ebooks account
 OAUTH_TOKEN_SECRET = AUTH[:oauth_token_secret] # oauth secret for ebooks account
 ROBOT_ID = "ebooks" # Avoid infinite reply chains
-TWITTER_USERNAME = "dbaker_ebooks" # Ebooks account username
+TWITTER_USERNAME = "dbaker_bat" # Ebooks account username
 TEXT_MODEL_NAME = "dorotheabaker" # This should be the name of the text model
 
 # TODO get length of each tweet and set delay accordingly
-DELAY = 2..30 # Simulated human reply delay range in seconds
+DELAY = 3..40 # Simulated human reply delay range in seconds
 BLACKLIST = [] # Grumpy users to avoid interaction with
 
 SPECIAL_WORDS = []
@@ -70,14 +70,11 @@ class GenBot
       special = tokens.find { |t| SPECIAL_WORDS.include?(t.downcase) }
   
       if very_interesting || special
-        @bot.favorite(tweet)
+        favorite(tweet)
       end
   
-      if rand < 0.8
-        reply(tweet, meta)
-      else
-        puts("abandoning conversation cause bored")
-      end
+      reply(tweet, meta)
+
     end
   
     bot.on_timeline do |tweet, meta|
@@ -93,7 +90,7 @@ class GenBot
       special = tokens.find { |t| SPECIAL_WORDS.include?(t.downcase) }
   
       if special || interesting || very_interesting || (SPECIAL_USERS.include?(tweet[:user][:screen_name]) && rand(10) <= 4)
-        @bot.favorite(tweet)
+        favorite(tweet)
         favd = true # Mark this tweet as favorited
   
         bot.delay DELAY do
@@ -107,11 +104,11 @@ class GenBot
       $have_talked[tweet[:user][:screen_name]] = true
   
       if very_interesting || special
-        @bot.favorite(tweet) if (rand < 0.5 && !favd) # Don't fav the tweet if we did earlier
+        favorite(tweet) if (rand < 0.5 && !favd) # Don't fav the tweet if we did earlier
         #retweet(tweet) if rand < 0.1
         reply(tweet, meta) if rand < 0.1
       elsif interesting
-        @bot.favorite(tweet) if rand < 0.1
+        favorite(tweet) if rand < 0.1
         #reply(tweet, meta) if rand < 0.05
       end
     end
@@ -159,19 +156,35 @@ class GenBot
     special = tokens.find { |t| SPECIAL_WORDS.include?(t.downcase) }
     bff = SPECIAL_USERS.include?(tweet[:user])
   
+    if rand < 0.2
+      resp = move_words_around(resp)
+    elsif rand < 0.4
+      resp = move_letters_around(resp)
+    end
+
+    # special delay for replies dependant on length of tweet
+    len = resp.length
+    if len < 80
+      reply_delay = 3..9
+    elsif len > 80 && len < 100
+      reply_delay = 10..20
+    else
+      reply_delay = 20..40
+    end
+
     if (very_interesting || special) || bff
-      @bot.delay DELAY do
+      @bot.delay reply_delay do
         @bot.reply tweet, meta[:reply_prefix] + resp
         @bot.log "Responded to #{tweet[:user]} with #{resp}"
       end
     elsif rand(10) <= 8
-      @bot.delay DELAY do
+      @bot.delay reply_delay do
         @bot.reply tweet, meta[:reply_prefix] + resp
         @bot.log "Responded to #{tweet[:user]} with #{resp}"
       end
     else
       @bot.log "abandoning conversation cause bored"
-      @bot.favorite(meta) # if last mention not replied to, fave it instead (just to be nice)
+      favorite(tweet) # if last mention not replied to, fave it instead (just to be nice)
     end
 
   end
@@ -215,6 +228,7 @@ class GenBot
     words = words[0...i] + words[i + 1...len]
     words.insert(rand(len), w)
     string = words.join(' ')
+    return string
     end
   end
 

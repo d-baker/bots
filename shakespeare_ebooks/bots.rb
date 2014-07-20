@@ -100,15 +100,19 @@ class GenBot
 
     bot.scheduler.every '30m' do
 
-      tweet = @model.make_statement
-      (0..10).each do
-        if @model.verbatim?(tweet) then
-          puts("that one was verbatim")
-          tweet = @model.make_statement
-        end
-      end
+      if rand <= 0.5:
 
-      @bot.tweet tweet
+        tweet = @model.make_statement
+        (0..10).each do
+          if @model.verbatim?(tweet) then
+            puts("that one was verbatim")
+            tweet = @model.make_statement
+          end
+        end
+
+        @bot.tweet tweet
+
+      end
 
     end
   end
