@@ -100,7 +100,7 @@ class GenBot
 
     bot.scheduler.every '30m' do
 
-      if rand <= 0.5:
+      if rand <= 0.5
 
         tweet = @model.make_statement
         (0..10).each do
