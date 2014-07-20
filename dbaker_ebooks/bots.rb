@@ -12,7 +12,6 @@ ROBOT_ID = "ebooks" # Avoid infinite reply chains
 TWITTER_USERNAME = "dbaker_bat" # Ebooks account username
 TEXT_MODEL_NAME = "dorotheabaker" # This should be the name of the text model
 
-# TODO get length of each tweet and set delay accordingly
 DELAY = 3..40 # Simulated human reply delay range in seconds
 BLACKLIST = [] # Grumpy users to avoid interaction with
 
@@ -24,6 +23,9 @@ File.foreach("resources/bffs.txt") {|el| SPECIAL_USERS.push(el) }
 File.foreach("resources/special.txt") {|el| SPECIAL_WORDS.push(el) }
 File.foreach("resources/boring.txt") {|el| BORING_WORDS.push(el) }
 
+UNICODES = ["\u0308", "\u0324", "\u0300", "\u0301", "\u0307", "\u030a", "\u0325", "\u0360", "\u0361", "\u0338", "\u0363", "\u0364", "\u0365", "\u0366", "\u0367", "\u0368", "\u0369", "\u036a", "\u036c", "u036d", "\u036e", "\u036f", "\u035c", "\u0325", "\u0323"
+]
+
 # Track who we've randomly interacted with globally
 $have_talked = {}
 
@@ -31,7 +33,9 @@ class GenBot
   def initialize(bot, modelname)
     @bot = bot
     @model = nil
-  
+
+    @following = []
+
     bot.consumer_key = CONSUMER_KEY
     bot.consumer_secret = CONSUMER_SECRET
   
@@ -54,9 +58,11 @@ class GenBot
   #end
   
     bot.on_follow do |user|
-      if SPECIAL_USERS.include?(user) || user.downcase.include?("ebooks") || user.downcase.include?("bot")
+      interesting = SPECIAL_USERS.include?(user) || user.downcase.include?("ebooks") || user.downcase.include?("bot")
+      if interesting && !(@following.include? username)
         bot.delay DELAY do
           bot.follow user[:screen_name]
+          @following << username
         end
       end
     end
@@ -89,7 +95,9 @@ class GenBot
       very_interesting = tokens.find_all { |t| @top20.include?(t.downcase) }.length > 2
       special = tokens.find { |t| SPECIAL_WORDS.include?(t.downcase) }
   
-      if special || interesting || very_interesting || (SPECIAL_USERS.include?(tweet[:user][:screen_name]) && rand(10) <= 4)
+      interesting = special || interesting || very_interesting || (SPECIAL_USERS.include?(tweet[:user][:screen_name]))
+
+      if interesting && rand(10) <= 4
         favorite(tweet)
         favd = true # Mark this tweet as favorited
   
@@ -130,9 +138,27 @@ class GenBot
       special = tokens.find { |t| SPECIAL_WORDS.include?(t.downcase) }
   
       if very_interesting || special
+
+        if rand < 0.2
+          tweet = move_words_around(tweet)
+        elsif rand < 0.4
+          tweet = move_letters_around(tweet)
+        end
+
+        diacritic(tweet)
         @bot.tweet tweet
+
       elsif rand(10) <= 2
+
+        if rand < 0.2
+          tweet = move_words_around(tweet)
+        elsif rand < 0.4
+          tweet = move_letters_around(tweet)
+        end
+
+        diacritic(tweet)
         @bot.tweet tweet
+
       else
         @bot.log "not tweeting \"#{tweet}\", too boring (maybe?)"
       end
@@ -155,7 +181,7 @@ class GenBot
     very_interesting = tokens.find_all { |t| @top100.include?(t.downcase) }.length > 2
     special = tokens.find { |t| SPECIAL_WORDS.include?(t.downcase) }
     bff = SPECIAL_USERS.include?(tweet[:user])
-  
+
     if rand < 0.2
       resp = move_words_around(resp)
     elsif rand < 0.4
@@ -174,11 +200,13 @@ class GenBot
 
     if (very_interesting || special) || bff
       @bot.delay reply_delay do
+        diacritic(resp)
         @bot.reply tweet, meta[:reply_prefix] + resp
         @bot.log "Responded to #{tweet[:user]} with #{resp}"
       end
     elsif rand(10) <= 8
       @bot.delay reply_delay do
+        diacritic(resp)
         @bot.reply tweet, meta[:reply_prefix] + resp
         @bot.log "Responded to #{tweet[:user]} with #{resp}"
       end
@@ -203,7 +231,9 @@ class GenBot
     end
   end
 
-# TODO glitch functions
+  ################################# glitching #################################
+
+  # word and letter shifting code by Liam Cooke
   def move_letters_around(string)
     len = string.length
     char = ' '
@@ -231,6 +261,26 @@ class GenBot
     return string
     end
   end
+
+  def diacritic(text)
+    words = text.split
+    len = words.length
+
+    5.times do
+        word = rand (len) # random word from string
+        l = words[word].length
+        char = rand (l) # random char from word
+
+        if words[word][char].match /[[:alpha:]]/
+            text.insert((char + 1) * (word + 1), UNICODES.sample)
+        end
+        puts(text)
+    end
+
+    return text
+  end
+
+  #############################################################################
 
 def make_bot(bot, modelname)
   GenBot.new(bot, modelname)
