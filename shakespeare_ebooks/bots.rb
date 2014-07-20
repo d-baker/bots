@@ -98,32 +98,17 @@ class GenBot
     end
 
 
+    bot.scheduler.every '30m' do
 
-    bot.scheduler.every '2h' do
-
-      # 60% chance of tweeting every 2 hours
-      if rand <= 0.6
-
-        count = 0
-
-        # post 14 tweets with a 10 second interval
-        bot.scheduler.every('10s') do
-
-          return unless count < 14
-
+      tweet = @model.make_statement
+      (0..10).each do
+        if @model.verbatim?(tweet) then
+          puts("that one was verbatim")
           tweet = @model.make_statement
-          (0..10).each do
-            if @model.verbatim?(tweet) then
-              puts("that one was verbatim")
-              tweet = @model.make_statement
-            end
-          end
-
-          @bot.tweet tweet
-          count += 1
         end
-
       end
+
+      @bot.tweet tweet
 
     end
   end
