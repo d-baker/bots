@@ -12,12 +12,9 @@ ROBOT_ID = "ebooks" # Avoid infinite reply chains
 TWITTER_USERNAME = "dbaker_ebooks" # Ebooks account username
 TEXT_MODEL_NAME = "dorotheabaker" # This should be the name of the text model
 
+# TODO get length of each tweet and set delay accordingly
 DELAY = 2..30 # Simulated human reply delay range in seconds
 BLACKLIST = [] # Grumpy users to avoid interaction with
-
-# TODO put wordlists etc in separate file and import
-#SPECIAL_WORDS = ["bot", "b o t", "metal", "Bach", "minimalism", "omg"]
-# SPECIAL_USERS = ["horse_inky", "inky", "thricedotted", "thricebotted", "katierosepipkin", "negatendo", "negatendo_ebooks", "wikisext", "oliviataters", "mstea_ebooks"]
 
 SPECIAL_WORDS = []
 SPECIAL_USERS = []
@@ -70,7 +67,7 @@ class GenBot
   
       tokens = NLP.tokenize(tweet[:text])
       very_interesting = tokens.find_all { |t| @top100.include?(t.downcase) }.length > 2
-      special = tokens.find { |t| SPECIAL_WORDS.include?(t) }
+      special = tokens.find { |t| SPECIAL_WORDS.include?(t.downcase) }
   
       if very_interesting || special
         @bot.favorite(tweet)
@@ -93,7 +90,7 @@ class GenBot
       # tweet matches our keywords
       interesting = tokens.find { |t| @top100.include?(t.downcase) }
       very_interesting = tokens.find_all { |t| @top20.include?(t.downcase) }.length > 2
-      special = tokens.find { |t| SPECIAL_WORDS.include?(t) }
+      special = tokens.find { |t| SPECIAL_WORDS.include?(t.downcase) }
   
       if special || interesting || very_interesting || (SPECIAL_USERS.include?(tweet[:user][:screen_name]) && rand(10) <= 4)
         @bot.favorite(tweet)
@@ -120,7 +117,7 @@ class GenBot
     end
   
     bot.scheduler.every '15m', :first_in => '5s' do
-      next if rand(10) <= 0
+      next if rand(10) == 0
   
       tweet = @model.make_statement
   
@@ -133,11 +130,11 @@ class GenBot
       tokens = NLP.tokenize(tweet)
   
       very_interesting = tokens.find_all { |t| @top100.include?(t.downcase) }.length > 2
-      special = tokens.find { |t| SPECIAL_WORDS.include?(t) }
+      special = tokens.find { |t| SPECIAL_WORDS.include?(t.downcase) }
   
       if very_interesting || special
         @bot.tweet tweet
-      elsif rand(10) <= 3
+      elsif rand(10) <= 2
         @bot.tweet tweet
       else
         @bot.log "not tweeting \"#{tweet}\", too boring (maybe?)"
@@ -147,37 +144,37 @@ class GenBot
     end
   end
   
-    def reply(tweet, meta)
-      resp = @model.make_response(meta[:mentionless], meta[:limit])
+  def reply(tweet, meta)
+    resp = @model.make_response(meta[:mentionless], meta[:limit])
   
-      (0..10).each do
-        if @model.verbatim?(resp) then
-          resp = @model.make_response(meta[:mentionless], meta[:limit])
-        end
+    (0..10).each do
+      if @model.verbatim?(resp) then
+        resp = @model.make_response(meta[:mentionless], meta[:limit])
       end
-  
-      tokens = NLP.tokenize(resp)
-
-      very_interesting = tokens.find_all { |t| @top100.include?(t.downcase) }.length > 2
-      special = tokens.find { |t| SPECIAL_WORDS.include?(t) }
-      bff = SPECIAL_USERS.include?(tweet[:user])
-  
-      if (very_interesting || special) || bff
-        @bot.delay DELAY do
-          @bot.reply tweet, meta[:reply_prefix] + resp
-          @bot.log "Responded to #{tweet[:user]} with #{resp}"
-        end
-      elsif rand(10) <= 8
-        @bot.delay DELAY do
-          @bot.reply tweet, meta[:reply_prefix] + resp
-          @bot.log "Responded to #{tweet[:user]} with #{resp}"
-        end
-      else
-        @bot.log "abandoning conversation cause bored"
-        @bot.favorite meta # if last mention not replied to, fave it instead (just to be nice)
-      end
-
     end
+  
+    tokens = NLP.tokenize(resp)
+
+    very_interesting = tokens.find_all { |t| @top100.include?(t.downcase) }.length > 2
+    special = tokens.find { |t| SPECIAL_WORDS.include?(t.downcase) }
+    bff = SPECIAL_USERS.include?(tweet[:user])
+  
+    if (very_interesting || special) || bff
+      @bot.delay DELAY do
+        @bot.reply tweet, meta[:reply_prefix] + resp
+        @bot.log "Responded to #{tweet[:user]} with #{resp}"
+      end
+    elsif rand(10) <= 8
+      @bot.delay DELAY do
+        @bot.reply tweet, meta[:reply_prefix] + resp
+        @bot.log "Responded to #{tweet[:user]} with #{resp}"
+      end
+    else
+      @bot.log "abandoning conversation cause bored"
+      @bot.favorite(meta) # if last mention not replied to, fave it instead (just to be nice)
+    end
+
+  end
   
   def favorite(tweet)
     @bot.log "Favoriting @#{tweet[:user][:screen_name]}: #{tweet[:text]}"
@@ -192,7 +189,34 @@ class GenBot
       @bot.twitter.retweet(tweet[:id])
     end
   end
-end
+
+# TODO glitch functions
+  def move_letters_around(string)
+    len = string.length
+    char = ' '
+    while char == ' '
+      i = rand(len)
+      char = string[i]
+    end
+    string = string[0...i] + string[i + 1...len]
+    j = i
+    while j == i
+      j = rand(len)
+    end
+    string.insert(j, char)
+    return string
+  end
+
+  def move_words_around(text)
+    words = text.split
+    len = words.length
+    i = rand len
+    w = words[i]
+    words = words[0...i] + words[i + 1...len]
+    words.insert(rand(len), w)
+    string = words.join(' ')
+    end
+  end
 
 def make_bot(bot, modelname)
   GenBot.new(bot, modelname)
