@@ -1,0 +1,8 @@
+resources/
+	auth.json
+
+model/
+	shakespeare.model
+
+corpus/
+	shakespeare.json
