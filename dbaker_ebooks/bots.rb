@@ -23,7 +23,7 @@ File.foreach("resources/bffs.txt") {|el| SPECIAL_USERS.push(el) }
 File.foreach("resources/special.txt") {|el| SPECIAL_WORDS.push(el) }
 File.foreach("resources/boring.txt") {|el| BORING_WORDS.push(el) }
 
-UNICODES = ["\u0308", "\u0324", "\u0300", "\u0301", "\u0307", "\u030a", "\u0325", "\u0360", "\u0361", "\u0338", "\u0363", "\u0364", "\u0365", "\u0366", "\u0367", "\u0368", "\u0369", "\u036a", "\u036c", "u036d", "\u036e", "\u036f", "\u035c", "\u0325", "\u0323"
+UNICODES = ["\u0308", "\u0324", "\u0300", "\u0301", "\u0307", "\u030a", "\u0325", "\u0360", "\u0361", "\u0338", "\u0363", "\u0364", "\u0365", "\u0366", "\u0367", "\u0368", "\u0369", "\u036a", "\u036c", "\u036d", "\u036e", "\u036f", "\u035c", "\u0325", "\u0323"
 ]
 
 # Track who we've randomly interacted with globally
