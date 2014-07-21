@@ -13,7 +13,7 @@ EVERYWORD = open("resources/everyword.txt").read().split()
 def gen():
 
     if (os.path.exists("resources/tweeted_words.txt")):
-        tweeted_words = list(open("resources/tweeted_words.txt").read().strip()) # read file
+        tweeted_words = list(open("resources/tweeted_words.txt").read().split()) # read file
     else:
         tweeted_words = open("resources/tweeted_words.txt", "w+") # create file
 
@@ -27,8 +27,8 @@ def gen():
     if random.random() > 0.02:
         word = random.choice(NOUNS).strip()
 
-        for i in range(0, 100):
-            if word in tweeted_words:
+        if word in tweeted_words:
+            for i in range(0, 100):
                 word = random.choice(NOUNS).strip()
 
                 # give up and use everyword list if we sort-of run out of words
@@ -47,8 +47,8 @@ def gen():
     else:
         word = random.choice(ADJECTIVES).strip()
 
-        for i in range(0, 100):
-            if word in tweeted_words:
+        if word in tweeted_words:
+            for i in range(0, 100):
                 word = random.choice(ADJECTIVES).strip()
 
                 # give up and use everyword list if we sort-of run out of words
@@ -64,13 +64,13 @@ def gen():
 
     # append to file if it exists
     if (os.path.exists("resources/tweeted_words.txt")):
-        tweeted_words = open("resources/tweeted_words.txt", "a")
+        words = open("resources/tweeted_words.txt", "a")
     # create file otherwise
     else:
-        tweeted_words = open("resources/tweeted_words.txt", "w")
+        words = open("resources/tweeted_words.txt", "w")
 
     # add latest word to file
-    tweeted_words.write(word + "\n")
+    words.write(word + "\n")
 
     return phrase
 
