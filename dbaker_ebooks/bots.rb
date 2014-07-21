@@ -140,9 +140,9 @@ class GenBot
       if very_interesting || special
 
         if rand < 0.2
-          tweet = move_words_around(tweet)
-        elsif rand < 0.4
           tweet = move_letters_around(tweet)
+        #elsif rand < 0.4
+        #  tweet = move_words_around(tweet)
         end
 
         diacritic(tweet)
@@ -151,9 +151,9 @@ class GenBot
       elsif rand(10) <= 2
 
         if rand < 0.2
-          tweet = move_words_around(tweet)
-        elsif rand < 0.4
           tweet = move_letters_around(tweet)
+        #elsif rand < 0.4
+        #  tweet = move_words_around(tweet)
         end
 
         diacritic(tweet)
@@ -183,9 +183,9 @@ class GenBot
     bff = SPECIAL_USERS.include?(tweet[:user])
 
     if rand < 0.2
-      resp = move_words_around(resp)
-    elsif rand < 0.4
       resp = move_letters_around(resp)
+    #elsif rand < 0.4
+    #  resp = move_words_around(resp)
     end
 
     # special delay for replies dependant on length of tweet
