@@ -77,15 +77,16 @@ class BotBand (TwitterBot):
 
 
     def on_scheduled_tweet(self):
-        text = gen()    
+        text = gen()
+
         if os.path.exists("resources/tweeted.txt"):
-            with open("resources/tweeted.txt", "r") as tweeted:
-                while text in tweeted:
-                    text = gen()
+            tweeted = list(open("resources/tweeted.txt", "r").read().split())
+            while text in tweeted:
+                text = gen()
 
         self.post_tweet(text)
-        with open("resources/tweeted.txt", "a") as tweeted:
-            tweeted.write(text + "\n")
+        with open("resources/tweeted.txt", "a") as fp:
+            fp.write(text + "\n")
 
 
     def on_mention(self, tweet, prefix):

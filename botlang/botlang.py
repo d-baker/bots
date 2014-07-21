@@ -213,13 +213,17 @@ class Bot:
 
         bottish = self.gen_bottish()
         # we don't want bottish imitating english (pity this couldn't be done in check())
-        if bottish in ENGLISH_WORDS:
-            bottish = self.gen_bottish()
         for i in range(0, 100):
+            if bottish in ENGLISH_WORDS:
+                bottish = self.gen_bottish()
+                if i == 99:
+                    print "ran out of valid bottish words!"
+
             if not self.check(bottish, dictionary):
                 bottish = self.gen_bottish()
                 if i == 99:
-                    print "ran out of bottish words!"
+                    print "ran out of valid bottish words!"
+
             else:
                 break
 
