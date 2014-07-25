@@ -98,7 +98,7 @@ class GenBot
     end
 
 
-    bot.scheduler.every '30m' do
+    bot.scheduler.every '30m', :first_in => '5s' do
 
       if rand <= 0.5
 
