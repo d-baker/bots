@@ -75,7 +75,7 @@ def gen():
     return phrase
 
 
-def last_resort(word):
+def last_resort(word, tweeted_words):
     word = random.choice(EVERYWORD).strip()
     for i in range(0, 100):
         if word in tweeted_words:
