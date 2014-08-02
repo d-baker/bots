@@ -8,7 +8,7 @@ CONSUMER_KEY = AUTH[:consumer_key]
 CONSUMER_SECRET = AUTH[:consumer_secret]
 OATH_TOKEN = AUTH[:oauth_token] # oauth token for ebooks account
 OAUTH_TOKEN_SECRET = AUTH[:oauth_token_secret] # oauth secret for ebooks account
-ROBOT_ID = "ebooks" # Avoid infinite reply chains
+ROBOT_ID = /ebooks|horse/ # Avoid infinite reply chains
 TWITTER_USERNAME = "dbaker_bat" # Ebooks account username
 TEXT_MODEL_NAME = "dorotheabaker" # This should be the name of the text model
 
@@ -69,7 +69,7 @@ class GenBot
   
     bot.on_mention do |tweet, meta|
       # Avoid infinite reply chains (very small chance of crosstalk)
-      next if tweet[:user][:screen_name].include?(ROBOT_ID) && rand > 0.05
+      next if tweet[:user][:screen_name].match(ROBOT_ID) && rand > 0.05
   
       tokens = NLP.tokenize(tweet[:text])
       very_interesting = tokens.find_all { |t| @top100.include?(t.downcase) }.length > 2
@@ -127,7 +127,7 @@ class GenBot
       tweet = @model.make_statement
   
       (0..10).each do
-        if @model.verbatim?(tweet) then
+        if verbatim_text?(tweet) then
           tweet = @model.make_statement
         end
       end
@@ -171,7 +171,7 @@ class GenBot
     resp = @model.make_response(meta[:mentionless], meta[:limit])
   
     (0..10).each do
-      if @model.verbatim?(resp) then
+      if verbatim_text?(resp) then
         resp = @model.make_response(meta[:mentionless], meta[:limit])
       end
     end
@@ -280,6 +280,11 @@ class GenBot
     return text
   end
 
+  # fix verbatim for strings (also Liam's)
+  def verbatim_text?(text)
+    tokens = Ebooks::NLP.tokenize(text)
+    @model.verbatim? tokens
+  end
   #############################################################################
 
 def make_bot(bot, modelname)

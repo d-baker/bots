@@ -8,7 +8,7 @@ CONSUMER_KEY = AUTH[:consumer_key]
 CONSUMER_SECRET = AUTH[:consumer_secret]
 OATH_TOKEN = AUTH[:oauth_token] # oauth token for ebooks account
 OAUTH_TOKEN_SECRET = AUTH[:oauth_token_secret] # oauth secret for ebooks account
-ROBOT_ID = "ebooks" # Avoid infinite reply chains
+ROBOT_ID = /ebooks|horse/ # Avoid infinite reply chains
 TWITTER_USERNAME = "shkspr_ebooks" # Ebooks account username
 TEXT_MODEL_NAME = "shakespeare" # This should be the name of the text model
 
@@ -47,7 +47,7 @@ class GenBot
 
     bot.on_mention do |tweet, meta|
       # Avoid infinite reply chains (very small chance of crosstalk)
-      next if tweet[:user][:screen_name].include?(ROBOT_ID) && rand > 0.05
+      next if tweet[:user][:screen_name].match(ROBOT_ID) && rand > 0.05
 
       tokens = NLP.tokenize(tweet[:text])
 
@@ -104,7 +104,7 @@ class GenBot
 
         tweet = @model.make_statement
         (0..10).each do
-          if @model.verbatim?(tweet) then
+          if verbatim_text?(tweet) then
             puts("that one was verbatim")
             tweet = @model.make_statement
           end
@@ -118,6 +118,10 @@ class GenBot
   end
 
 
+  def verbatim_text?(text)
+    tokens = Ebooks::NLP.tokenize(text)
+    @model.verbatim? tokens
+  end
 
   def reply(tweet, meta)
     resp = @model.make_response(meta[:mentionless], meta[:limit])
