@@ -1,3 +1,6 @@
+# encoding: utf-8
+from __future__ import unicode_literals
+
 from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 import twitter
 
