@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 import json
 import tweepy
+import re
 
 from datetime import datetime, timedelta
 from pytz import timezone
@@ -32,7 +33,7 @@ class UnconfusionBot:
         user_info = self.api.get_user(screen_name = username)
         location = user_info.location
 
-        loc_strings = list( str.split(location, ",") )
+        loc_strings = list( re.split(",/", location) )
 
         if len(loc_strings) > 1:
             timezone = loc_strings[1].strip() + "/" + loc_strings[0].strip()
@@ -45,17 +46,18 @@ class UnconfusionBot:
         tweet = mention.text
 
         # TODO need to get rid of @-string
-        tweet_strings = list(str.split(tweet, " "))
+        tweet_strings = list(re.split('\s|,|/', tweet))
+        print tweet_strings
 
         timezones = list(open("resources/timezones.txt", "r").read().split())
         tz = []
         timezone = ""
 
         for s in tweet_strings:
-            tz = [t for t in timezones if s in t]
+            tz = [t for t in timezones if s.lower() in t.lower()]
 
         if len(tz) == 0:
-            print("couldn't find a valid timezone in tweet");
+            self.log("couldn't find a valid timezone in tweet");
             return
         else:
             # first timezone matching something in the tweet
@@ -70,12 +72,18 @@ class UnconfusionBot:
         local_tz = timezone(local)
         local_time = datetime.now(local_tz) # change this bit
 
+        if foreign == None:
+            return "couldn't find that timezone, sorry"
+
         foreign_tz = timezone(foreign)
         foreign_time = local_time.astimezone(foreign_tz)
 
         return foreign_time.strftime('%b %d, %I:%M %p')
 
     def get_current_time(self, foreign):
+        if foreign == None:
+            return "couldn't find that timezone, sorry"
+
         foreign_tz = timezone(foreign)
         foreign_time = datetime.now(foreign_tz)
 
@@ -109,7 +117,7 @@ class UnconfusionBot:
         status = "@{u} {t}".format(u = mention.user.screen_name, t = text)
         in_reply_to = mention.id
 
-        s = self.api.update_status(status, in_reply_to)
+        #s = self.api.update_status(status, in_reply_to)
 
         self.log("tweeted \"{t}\"".format(t = status))
 
