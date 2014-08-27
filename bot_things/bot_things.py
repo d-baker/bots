@@ -27,13 +27,14 @@ def gen():
     if random.random() > 0.02:
         word = random.choice(NOUNS).strip()
 
-        if word in tweeted_words:
-            for i in range(0, 100):
+        for i in range (0, 100):
+            if word in tweeted_words:
                 word = random.choice(NOUNS).strip()
 
                 # give up and use everyword list if we sort-of run out of words
                 if i == 99:
-                    last_resort(word, tweeted_words)
+                    word = last_resort(word, tweeted_words)
+
 
         # high chance of using "bot"
         if random.random() > 0.02:
@@ -47,13 +48,13 @@ def gen():
     else:
         word = random.choice(ADJECTIVES).strip()
 
-        if word in tweeted_words:
-            for i in range(0, 100):
-                word = random.choice(ADJECTIVES).strip()
+        for i in range (0, 100):
+            if word in tweeted_words:
+                word = random.choice(NOUNS).strip()
 
                 # give up and use everyword list if we sort-of run out of words
                 if i == 99:
-                    last_resort(word, tweeted_words)
+                    word = last_resort(word, tweeted_words)
 
         # high chance of using "bot"
         if random.random() > 0.02:
@@ -85,6 +86,8 @@ def last_resort(word, tweeted_words):
             if i == 99:
                 log("bot apocalypse")
                 return
+
+        return word
 
 
 def log(message):
