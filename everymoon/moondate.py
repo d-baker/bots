@@ -13,12 +13,12 @@ class MoonDate:
             self.month_day = datetime.today().day
             self.month = datetime.today().month
             self.year = datetime.today().year
-            self.last_month_day = calendar.monthrange(self.year, self.month)[1]
         else:
             self.month_day = mdate.day
             self.month = mdate.month
             self.year = mdate.year
-            self.last_month_day = calendar.monthrange(self.year, self.month)[1]
+        
+        self.last_month_day = calendar.monthrange(self.year, self.month)[1]
 
         if hemisphere == "southern": # change order of emoji for southern hemisphere
 
