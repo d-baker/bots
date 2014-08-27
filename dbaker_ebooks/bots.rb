@@ -139,24 +139,29 @@ class GenBot
   
       if very_interesting || special
 
-        if rand < 0.2
+        if rand < 0.1
           tweet = move_letters_around(tweet)
         #elsif rand < 0.4
         #  tweet = move_words_around(tweet)
         end
 
-        diacritic(tweet)
+        if rand < 0.2
+            diacritic(tweet)
+        end
+
         @bot.tweet tweet
 
       elsif rand(10) <= 2
 
-        if rand < 0.2
+        if rand < 0.1
           tweet = move_letters_around(tweet)
         #elsif rand < 0.4
         #  tweet = move_words_around(tweet)
         end
 
-        diacritic(tweet)
+        if rand < 0.2
+            diacritic(tweet)
+        end
         @bot.tweet tweet
 
       else
@@ -182,7 +187,7 @@ class GenBot
     special = tokens.find { |t| SPECIAL_WORDS.include?(t.downcase) }
     bff = SPECIAL_USERS.include?(tweet[:user])
 
-    if rand < 0.2
+    if rand < 0.1
       resp = move_letters_around(resp)
     #elsif rand < 0.4
     #  resp = move_words_around(resp)
@@ -200,13 +205,19 @@ class GenBot
 
     if (very_interesting || special) || bff
       @bot.delay reply_delay do
-        diacritic(resp)
+        if rand < 0.2
+            diacritic(resp)
+        end
+
         @bot.reply tweet, meta[:reply_prefix] + resp
         @bot.log "Responded to #{tweet[:user]} with #{resp}"
       end
     elsif rand(10) <= 8
       @bot.delay reply_delay do
-        diacritic(resp)
+        if rand < 0.2
+            diacritic(resp)
+        end
+
         @bot.reply tweet, meta[:reply_prefix] + resp
         @bot.log "Responded to #{tweet[:user]} with #{resp}"
       end
