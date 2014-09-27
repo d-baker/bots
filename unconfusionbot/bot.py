@@ -107,10 +107,10 @@ class UnconfusionBot(TwitterBot):
 
             if "time" in mention:
                 text = self.get_timezone(location)
+                self.post_tweet(prefix + ' ' + text, reply_to=tweet)
             elif "temp" in mention:
                 text = self.get_temp(location) + "°C"
-
-            self.post_tweet(prefix + ' ' + text, reply_to=tweet)
+                self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
 
     def on_timeline(self, tweet, prefix):
