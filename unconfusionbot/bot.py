@@ -38,7 +38,8 @@ class UnconfusionBot(TwitterBot):
         # SEMI-OPTIONAL: OTHER CONFIG STUFF! #
         ######################################
 
-        MINS, SECS = 60
+        MINS = 60 
+        SECS = 60
         # how often to tweet, in seconds
         # tweet every 3 hours
         self.config['tweet_interval'] = 3 * MINS * SECS
