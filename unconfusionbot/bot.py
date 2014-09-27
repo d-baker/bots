@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 from pytz import timezone
 import requests
 import pytz
+import random
 
 from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 
@@ -37,8 +38,10 @@ class UnconfusionBot(TwitterBot):
         # SEMI-OPTIONAL: OTHER CONFIG STUFF! #
         ######################################
 
+        MINS, SECS = 60
         # how often to tweet, in seconds
-        self.config['tweet_interval'] = 30 * 60     # default: 30 minutes
+        # tweet every 3 hours
+        self.config['tweet_interval'] = 3 * MINS * SECS
 
         # use this to define a (min, max) random range of how often to tweet
         # e.g., self.config['tweet_interval_range'] = (5*60, 10*60) # tweets every 5-10 minutes
@@ -82,17 +85,9 @@ class UnconfusionBot(TwitterBot):
 
 
     def on_scheduled_tweet(self):
-        """
-        Make a public tweet to the bot's own timeline.
-
-        It's up to you to ensure that it's less than 140 characters.
-
-        Set tweet frequency in seconds with TWEET_INTERVAL in config.py.
-        """
-        # text = function_that_returns_a_string_goes_here()
-        # self.post_tweet(text)
-
-        pass
+        location = get_random_city()
+        text = self.get_timezone(location) + " / " + self.get_temp + "°C"
+        self.post_tweet(text)
 
     def on_mention(self, tweet, prefix):
         tweet_time = tweet.created_at # tweet timestamp
@@ -170,6 +165,18 @@ class UnconfusionBot(TwitterBot):
                 return [lat, lng];
 
         return False
+
+    def get_random_city(self):
+        url = "http://api.geonames.org/citiesJSON?north=90&south=-90&west=180&east=-180&username=dbaker"
+        r = requests.get(url)
+
+        cities = []
+
+        js = json.loads(r.text)
+        for result in js["geonames"]:
+            cities.append(result["toponymName"])
+
+        return random.choice(cities)
 
     def get_timezone(self, location):
         coords = self.get_lat_long(location)
