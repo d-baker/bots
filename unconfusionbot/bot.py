@@ -99,18 +99,28 @@ class UnconfusionBot(TwitterBot):
         now = datetime.utcnow()
         diff = now - tweet_time # tweet age
 
-        # only reply to mentions in last 2 mins
-        if diff.seconds <= 120:
+        text = ""
+
+        # only reply to mentions in last 4 mins
+        if diff.seconds <= 240:
             location = self.get_location(tweet.text)
 
             mention = re.sub(r'(^|[^@\w])@(\w{1,15})\b', "", tweet.text)
 
             if "time" in mention:
-                text = self.get_timezone(location)
-                self.post_tweet(prefix + ' ' + text, reply_to=tweet)
+                if "temp" in mention:
+                    text = self.get_timezone(location) + " / " + self.get_temp(location)
+                else:
+                    text = self.get_timezone(location)
+
             elif "temp" in mention:
                 text = self.get_temp(location) + "°C"
-                self.post_tweet(prefix + ' ' + text, reply_to=tweet)
+
+            # provide both by default if unspecified
+            else:
+                text = self.get_timezone(location) + " / " + self.get_temp(location)
+
+            self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
 
     def on_timeline(self, tweet, prefix):
@@ -174,7 +184,7 @@ class UnconfusionBot(TwitterBot):
             s = datetime.strptime(time, "%Y-%m-%d %H:%M")
             return s.strftime("%Y-%m-%d, %I:%M %p")
 
-        return False
+        return "sorry, something went wrong"
 
     def get_temp(self, location):
         coords = self.get_lat_long(location)
@@ -188,7 +198,7 @@ class UnconfusionBot(TwitterBot):
             temp = js["weatherObservation"]["temperature"]
             return temp
 
-        return False
+        return "sorry, something went wrong"
 
 if __name__ == '__main__':
     bot = UnconfusionBot()
