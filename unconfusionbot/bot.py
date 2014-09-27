@@ -159,11 +159,15 @@ class UnconfusionBot(TwitterBot):
         lng = ""
 
         js = json.loads(r.text)
-        for result in js["geonames"]:
-            if result["toponymName"] == location:
-                lat = result["lat"]
-                lng = result["lng"]
-                return [lat, lng];
+
+        try:
+            for result in js["geonames"]:
+                if result["toponymName"] == location:
+                    lat = result["lat"]
+                    lng = result["lng"]
+                    return [lat, lng];
+        except:
+            pass
 
         return False
 
@@ -179,10 +183,15 @@ class UnconfusionBot(TwitterBot):
         cities = []
 
         js = json.loads(r.text)
-        for result in js["geonames"]:
-            cities.append(result["toponymName"])
 
-        return random.choice(cities)
+        try:
+            for result in js["geonames"]:
+                cities.append(result["toponymName"])
+
+            return random.choice(cities)
+
+        except:
+            return False
 
     def get_timezone(self, location):
         coords = self.get_lat_long(location)
@@ -193,9 +202,13 @@ class UnconfusionBot(TwitterBot):
             r = requests.get(url)
 
             js = json.loads(r.text)
-            time = js["time"]
-            s = datetime.strptime(time, "%Y-%m-%d %H:%M")
-            return s.strftime("%Y-%m-%d, %I:%M %p")
+
+            try:
+                time = js["time"]
+                s = datetime.strptime(time, "%Y-%m-%d %H:%M")
+                return s.strftime("%Y-%m-%d, %I:%M %p")
+            except:
+                pass
 
         return "sorry, something went wrong"
 
@@ -208,8 +221,11 @@ class UnconfusionBot(TwitterBot):
             r = requests.get(url)
 
             js = json.loads(r.text)
-            temp = js["weatherObservation"]["temperature"]
-            return temp
+            try:
+                temp = js["weatherObservation"]["temperature"]
+                return temp
+            except:
+                pass
 
         return "sorry, something went wrong"
 
