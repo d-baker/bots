@@ -9,7 +9,7 @@ from pattern.en.wordlist import PROFANITY
 import json
 import os
 
-ENGLISH_WORDS = list(open("resources/basicwords.txt", "r").read().split())
+ENGLISH_WORDS = list(open("resources/wordlist.txt", "r").read().split())
 MAX_SYLLABLES = 5
 
 class Bot:
