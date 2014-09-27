@@ -87,7 +87,7 @@ class UnconfusionBot(TwitterBot):
 
     def on_scheduled_tweet(self):
         location = self.get_random_city()
-        text = self.get_timezone(location) + " / " + self.get_temp + "°C"
+        text = location + ": " + self.get_timezone(location) + " / " + self.get_temp(location) + "°C"
         self.post_tweet(text)
 
     def on_mention(self, tweet, prefix):
@@ -168,7 +168,12 @@ class UnconfusionBot(TwitterBot):
         return False
 
     def get_random_city(self):
-        url = "http://api.geonames.org/citiesJSON?north=90&south=-90&west=180&east=-180&username=dbaker"
+        n = random.randint(-180, 180)
+        s = random.randint(-180, 180)
+        w = random.randint(-180, 180)
+        e = random.randint(-180, 180)
+
+        url = "http://api.geonames.org/citiesJSON?north={}&south={}&west={}&east=-{}&username=dbaker".format(n, s, w, e)
         r = requests.get(url)
 
         cities = []
