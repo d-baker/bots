@@ -86,7 +86,7 @@ class UnconfusionBot(TwitterBot):
 
 
     def on_scheduled_tweet(self):
-        location = get_random_city()
+        location = self.get_random_city()
         text = self.get_timezone(location) + " / " + self.get_temp + "°C"
         self.post_tweet(text)
 
