@@ -87,8 +87,9 @@ class UnconfusionBot(TwitterBot):
 
     def on_scheduled_tweet(self):
         location = self.get_random_city()
-        text = location + ": " + self.get_timezone(location) + " / " + self.get_temp(location) + "°C"
-        self.post_tweet(text)
+        if location:
+            text = location + ": " + self.get_timezone(location) + " / " + self.get_temp(location) + "°C"
+            self.post_tweet(text)
 
     def on_mention(self, tweet, prefix):
         tweet_time = tweet.created_at # tweet timestamp
