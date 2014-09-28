@@ -106,16 +106,16 @@ class UnconfusionBot(TwitterBot):
 
             if "time" in mention:
                 if "temp" in mention:
-                    text = self.get_timezone(location) + " / " + self.get_temp(location) + "°C"
+                    text = location + ": " + self.get_timezone(location) + " / " + self.get_temp(location) + "°C"
                 else:
-                    text = self.get_timezone(location)
+                    text = location +  ": " + self.get_timezone(location)
 
             elif "temp" in mention:
-                text = self.get_temp(location) + "°C"
+                text = location + ": " + self.get_temp(location) + "°C"
 
             # provide both by default if unspecified
             else:
-                text = self.get_timezone(location) + " / " + self.get_temp(location) + "°C"
+                text = location + ": " + self.get_timezone(location) + " / " + self.get_temp(location) + "°C"
 
             self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
