@@ -101,6 +101,7 @@ class UnconfusionBot(TwitterBot):
         # only reply to mentions in last 4 mins
         if diff.seconds <= 240:
             location = self.get_location(tweet.text)
+            coords = self.get_lat_long(location)
 
             mention = re.sub(r'(^|[^@\w])@(\w{1,15})\b', "", tweet.text)
 
@@ -117,7 +118,8 @@ class UnconfusionBot(TwitterBot):
             else:
                 text = location + ": " + self.get_timezone(location) + " / " + self.get_temp(location) + "°C"
 
-            self.post_tweet(prefix + ' ' + text, reply_to=tweet)
+            if coords:
+                self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
 
     def on_timeline(self, tweet, prefix):
