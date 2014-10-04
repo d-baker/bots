@@ -3,6 +3,7 @@
 
 from twitterbot import TwitterBot
 from unicodifier import unicodify
+from resources.config import API_KEY, API_SECRET, ACCESS_KEY, ACCESS_SECRET
 import re
 
 class MyTwitterBot(TwitterBot):
@@ -17,10 +18,10 @@ class MyTwitterBot(TwitterBot):
         ############################
         # REQUIRED: LOGIN DETAILS! #
         ############################
-        self.config['api_key'] = '4xbHr4l7MnZi9xIyUXmOreOxE'
-        self.config['api_secret'] = 'WkPIGpM1sEG0x1b4w2bRGjtWVYJMV6oQ9dg4OCkPE5rMraC2HK'
-        self.config['access_key'] = '2839575756-5jyrngrpALUvmKY7biTQimM2soNMZGI8n6In5Hh'
-        self.config['access_secret'] = '2BogsJURTkINRfRsJeRXqrZ0609eEKcAL3erR2MqDscAS'
+        self.config['api_key'] = API_KEY
+        self.config['api_secret'] = API_SECRET
+        self.config['access_key'] = ACCESS_KEY
+        self.config['access_secret'] = ACCESS_SECRET
 
 
         ######################################
