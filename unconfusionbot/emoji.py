@@ -38,7 +38,20 @@ class Emojifier:
         degree=list("##\n##\n..\n..\n..\n".split())
         c=list("###\n#..\n#..\n#..\n###\n".split())
 
-    
+        cold_emojis = [
+            "☁",
+            "💧",
+            "☔",
+            "☂",
+            "⛈",
+            "⛸"
+        ]
+        hot_emojis = [
+            "☀",
+            "🔥",
+            "🍦"
+        ]
+
         final_string = ""
     
         num_one = ""
@@ -56,6 +69,10 @@ class Emojifier:
             elif len(temp) == 2:
                 final_string += (num_one[i] + "." + num_two[i] + "." + degree[i] + "." + c[i] + "\n")
     
+        if int(temp) < 17:
+            return self.convert(final_string, random.choice(cold_emojis))
+        elif int(temp) > 23:
+            return self.convert(final_string, random.choice(hot_emojis))
         return self.convert(final_string)
     
     def emojify_time(self, cur_time):
@@ -92,7 +109,7 @@ class Emojifier:
     
         return self.convert(final_string)
     
-    def convert(self, string):
+    def convert(self, string, em = None):
         # not all emojis work - some aren't the same width as the whitespace emoji.
         # always test first!
     
@@ -108,7 +125,11 @@ class Emojifier:
                 ]
     
         whitespace="\u2B1C"
-        emoji=random.choice(emojis)
+ 
+        if em:
+            emoji = em
+        else:
+            emoji = random.choice(emojis)
     
         string = string.replace(".", whitespace)
         string = string.replace("#", emoji)

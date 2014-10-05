@@ -12,8 +12,8 @@ import requests
 import pytz
 import random
 
-#from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
-from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+#from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 
 from twitterbot import TwitterBot
 from emoji import Emojifier
@@ -89,8 +89,22 @@ class UnconfusionBot(TwitterBot):
 
     def on_scheduled_tweet(self):
         location = self.get_random_city()
+        timezone = self.get_timezone(location)
+        temp = self.get_temp(location)
+        emojifier = Emojifier()
+
         if location:
-            text = location + ": " + self.get_timezone(location) + " / " + self.get_temp(location) + "°C"
+
+            if random.random() < 0.5:
+
+                if random.random() < 0.2:
+                    text = location + ":\n" + emojifier.emojify_temp(temp)
+                else:
+                    text = location + ":\n" + emojifier.emojify_time(timezone)
+
+            else:
+                text = location + ": " + timezone + " / " + temp + "°C"
+
             self.post_tweet(text)
 
     def on_mention(self, tweet, prefix):
