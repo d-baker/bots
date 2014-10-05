@@ -113,7 +113,6 @@ class Emojifier:
         # not all emojis work - some aren't the same width as the whitespace emoji.
         # always test first!
     
-        # TODO make separate emoji list for temp
         emojis=["💧",
                 "☁",
                 "⚡",
@@ -123,7 +122,7 @@ class Emojifier:
                 "👾",
                 "💀",
                 "👽",
-                "🏡",
+                "🏡"
                 ]
     
         whitespace="\u2B1C"
