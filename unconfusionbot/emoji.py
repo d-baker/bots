@@ -90,7 +90,7 @@ class Emojifier:
         num_four = ""
     
         if len(time_string) == 3:
-            num_one = Emojifiernumerals[time_string[0]]
+            num_one = Emojifier.numerals[time_string[0]]
             num_two = Emojifier.numerals[time_string[1]]
             num_three = Emojifier.numerals[time_string[2]]
         elif len(time_string) == 4:
