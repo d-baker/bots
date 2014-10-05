@@ -12,9 +12,11 @@ import requests
 import pytz
 import random
 
-from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+#from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 
 from twitterbot import TwitterBot
+from emoji import Emojifier
 
 class UnconfusionBot(TwitterBot):
     def bot_init(self):
@@ -102,24 +104,35 @@ class UnconfusionBot(TwitterBot):
         if diff.seconds <= 240:
             location = self.get_location(tweet.text)
             coords = self.get_lat_long(location)
+            timezone = self.get_timezone(location)
+            temp = self.get_temp(location)
+            emojifier = Emojifier()
 
             mention = re.sub(r'(^|[^@\w])@(\w{1,15})\b', "", tweet.text)
 
             if "time" in mention:
                 if "temp" in mention:
-                    text = location + ": " + self.get_timezone(location) + " / " + self.get_temp(location) + "°C"
+                    text = location + ": " + timezone + " / " + temp + "°C"
+                elif "emoji" in mention and coords:
+                    text = location + ":\n" + emojifier.emojify_time(datetime.strptime(timezone, "%Y-%m-%d, %I:%M %p"))
                 else:
-                    text = location +  ": " + self.get_timezone(location)
+                    text = location +  ": " + location
 
             elif "temp" in mention:
-                text = location + ": " + self.get_temp(location) + "°C"
+                if "emoji" in mention and coords:
+                    text = location + ":\n" + emojifier.emojify_temp(temp)
+                else:
+                    text = location + ": " + temp + "°C"
 
             # provide both by default if unspecified
             else:
-                text = location + ": " + self.get_timezone(location) + " / " + self.get_temp(location) + "°C"
+                text = location + ": " + timezone + " / " + temp + "°C"
 
             if coords:
-                self.post_tweet(prefix + ' ' + text, reply_to=tweet)
+                if "emoji" in mention:
+                    self.post_tweet(prefix + "\n" + text, reply_to=tweet)
+                else:
+                    self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
 
     def on_timeline(self, tweet, prefix):
