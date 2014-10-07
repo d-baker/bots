@@ -100,7 +100,7 @@ class UnconfusionBot(TwitterBot):
                 if random.random() < 0.2:
                     text = location + ":\n" + emojifier.emojify_temp(temp)
                 else:
-                    text = location + ":\n" + emojifier.emojify_time(timezone)
+                    text = location + ":\n" + emojifier.emojify_time(datetime.strptime(timezone, "%Y-%m-%d, %I:%M %p"))
 
             else:
                 text = location + ": " + timezone + " / " + temp + "°C"
