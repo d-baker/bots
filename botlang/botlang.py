@@ -177,7 +177,7 @@ class Bot:
         new_word = {"bottish":bottish, "english":english}
 
         # check if file empty and read in existing definitons accordingly
-        if os.stat("resources/dictionary.json").st_size > 0 :
+        if os.stat("dictionary.json").st_size > 0 :
             all_words.append(new_word)
             for d in existing_words:
                 all_words.append(d)
@@ -185,7 +185,7 @@ class Bot:
             all_words.append(new_word)
 
         # write out each definition to the file again
-        with open("resources/dictionary.json", "w") as fp:
+        with open("dictionary.json", "w") as fp:
             json.dump(all_words, fp)
 
 
@@ -194,11 +194,11 @@ class Bot:
         dictionary = {}
 
         # create file if it doesn't exist
-        if not (os.path.exists("resources/dictionary.json")):
-            with open("resources/dictionary.json", "w") as fp:
+        if not (os.path.exists("dictionary.json")):
+            with open("dictionary.json", "w") as fp:
                 json.dump(dictionary, fp)
 
-        with open("resources/dictionary.json") as fp:
+        with open("dictionary.json") as fp:
             dictionary = json.load(fp)
 
         # I think having 2 loops may actually be more efficient cause of the break
