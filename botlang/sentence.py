@@ -13,7 +13,7 @@ import os
 class Sentence:
     def __init__(self):
         self.dictionary = {}
-        with open("resources/dictionary.json") as fp:
+        with open("dictionary.json") as fp:
             self.dictionary = json.load(fp)
 
     def translate(self, sentence):
