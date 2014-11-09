@@ -29,7 +29,7 @@ class Sentence:
         print ("Bottish: ", end="")
         for word in sentence:
             translation = "N/A"
-            stripped_word = re.sub(r"\W+", "", word)
+            stripped_word = re.sub(r"\W+$", "", word)
 
             for definition in self.dictionary:
                 if definition["english"] == stripped_word:
@@ -42,6 +42,7 @@ class Sentence:
 
             text += translation + " "
 
+        print(text)
         return(text)
 
     def get_sentence(self):
