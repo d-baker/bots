@@ -9,6 +9,9 @@ from pattern.en.wordlist import PROFANITY
 
 import json
 import os
+import re
+
+from botlang import Bot
 
 class Sentence:
     def __init__(self):
@@ -17,6 +20,8 @@ class Sentence:
             self.dictionary = json.load(fp)
 
     def translate(self, sentence):
+        bot = Bot()
+
         print ("English: " + sentence)
         sentence = list(sentence.split())
         text = ""
@@ -24,9 +29,17 @@ class Sentence:
         print ("Bottish: ", end="")
         for word in sentence:
             translation = "N/A"
+            stripped_word = re.sub(r"\W+", "", word)
+
             for definition in self.dictionary:
-                if definition["english"] == word:
+                if definition["english"] == stripped_word:
                     translation = definition["bottish"]
+
+            if translation == "N/A":
+                translation = (bot.run(bot.gen_bottish(), word))[0]
+
+            translation = word.replace(stripped_word, translation)
+
             text += translation + " "
 
         return(text)

@@ -22,15 +22,21 @@ class Bot:
 
     def gen_bottish(self):
 
-        # temporary silly orthography
-        vowel = ("i", "í", "e", "a", "u")
-        cons = ("s", "r", "t", "f", "ċ", "d", "l", "n", "p")
+        # very crude weighting lol
+        vowel = ("i", "i", "i", "a", "a", "y", "y", "y", "ė", "u")
+        cons = ("s", "s", "s", "n", "n", "n", "t", "t", "ċ", "ċ", "l", "l", "d", "q", "r", "p")
 
         bottish = ""
         new_cons = ""
         new_vowel = ""
         prev_syllables = []
-        for i in range(random.randint(1, MAX_SYLLABLES)):
+
+        if random.random < 0.3:
+            syls = MAX_SYLLABLES
+        else:
+            syls = 3
+
+        for i in range(random.randint(1, syls)):
             new_cons = random.choice(cons)
             new_vowel = random.choice(vowel)
 
@@ -188,8 +194,7 @@ class Bot:
         with open("dictionary.json", "w") as fp:
             json.dump(all_words, fp)
 
-
-    def run(self):
+    def run(self, bottish, english):
 
         dictionary = {}
 
@@ -202,7 +207,6 @@ class Bot:
             dictionary = json.load(fp)
 
         # I think having 2 loops may actually be more efficient cause of the break
-        english = self.gen_english()
         for i in range(0, 100):
             if not self.check(english, dictionary):
                 english = self.gen_english()
@@ -211,15 +215,15 @@ class Bot:
             else:
                 break
 
-        bottish = self.gen_bottish()
         # we don't want bottish imitating english (pity this couldn't be done in check())
         for i in range(0, 100):
-            if bottish in ENGLISH_WORDS:
-                bottish = self.gen_bottish()
-                if i == 99:
-                    print "ran out of valid bottish words!"
+            # commented out due to unicode hell
+            #if bottish in ENGLISH_WORDS:
+            #    bottish = self.gen_bottish()
+            #    if i == 99:
+            #        print "ran out of valid bottish words!"
 
-            if not self.check(bottish, dictionary):
+            if not self.check(bottish, dictionary) or (len(bottish) - len(english) > 2):
                 bottish = self.gen_bottish()
                 if i == 99:
                     print "ran out of valid bottish words!"
@@ -227,8 +231,16 @@ class Bot:
             else:
                 break
 
-        bottish, pos = self.posify(bottish, english, dictionary)[0], self.posify(bottish, english, dictionary)[1]
         self.add_to_dict(bottish, english, dictionary)
+
+        return [bottish, english, dictionary]
+
+    def format_for_tweet(self, definition):
+        bottish = definition[0]
+        english = definition[1]
+        dictionary = definition[2]
+
+        bottish, pos = self.posify(bottish, english, dictionary)[0], self.posify(bottish, english, dictionary)[1]
 
         return ("{bot} ({p}): {eng}").format(
             bot=bottish,
@@ -239,5 +251,5 @@ class Bot:
 
 if __name__ == "__main__":
     bot = Bot()
-    print bot.run()
+    print format_for_tweet(bot.run(bot.gen_bottish(), bot.gen_english()))
 
