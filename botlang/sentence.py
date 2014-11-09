@@ -47,7 +47,7 @@ class Sentence:
     def get_sentence(self):
         sentences = open("resources/botlang-sentences.txt").readlines()
         s = random.choice(sentences)
-        print (self.translate(s))
+        return (self.translate(s))
 
 if __name__ == "__main__":
     sentence = Sentence()

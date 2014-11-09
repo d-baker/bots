@@ -6,10 +6,13 @@ from __future__ import unicode_literals
 
 from twitterbot import TwitterBot
 from botlang import Bot
+from sentence import Sentence
 import os
 import random
 import re
 import datetime
+
+#from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 
 class Botlang (TwitterBot):
@@ -22,6 +25,7 @@ class Botlang (TwitterBot):
         """
 
         self.generator = Bot()
+        self.sentencer = Sentence()
 
         ############################
         # REQUIRED: LOGIN DETAILS! #
@@ -83,7 +87,8 @@ class Botlang (TwitterBot):
 
 
     def on_scheduled_tweet(self):
-        text = self.generator.run()    
+        # ugh ugh ugh
+        text = self.generator.format_for_tweet(self.generator.run(self.generator.gen_bottish(), self.generator.gen_english()))
 
         self.post_tweet(text)
 
@@ -92,16 +97,10 @@ class Botlang (TwitterBot):
         now = datetime.datetime.utcnow()
         diff = now - tweet_time # tweet age
 
-        #text = self.generator.run()
-
         # only reply to mentions in last 2 mins
         if diff.seconds <= 120:
-            pass
-            #self.post_tweet(prefix + ' ' + text, reply_to=tweet)
-
-            # call this to fav the tweet!
-            # if something:
-            #     self.favorite_tweet(tweet)
+            text = self.sentencer.translate(tweet.text.replace(prefix, ""))
+            self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
     def on_timeline(self, tweet, prefix):
         """
