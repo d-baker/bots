@@ -12,8 +12,8 @@ import random
 import re
 import datetime
 
-#from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
-from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+#from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 
 class Botlang (TwitterBot):
     def bot_init(self):
@@ -99,7 +99,9 @@ class Botlang (TwitterBot):
 
         # only reply to mentions in last 2 mins
         if diff.seconds <= 120:
-            text = self.sentencer.translate(tweet.text.replace(prefix, ""))
+            mention = re.sub(r'(^|[^@\w])@(\w{1,15})\b', "", tweet.text)
+
+            text = self.sentencer.translate(mention)
             self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
     def on_timeline(self, tweet, prefix):
