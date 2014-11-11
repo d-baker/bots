@@ -99,9 +99,9 @@ class Botlang (TwitterBot):
 
         # only reply to mentions in last 2 mins
         if diff.seconds <= 120:
-            #mention = re.sub(r'(^|[^@\w])@(\w{1,15})\b', "", tweet.text)
+            mention = re.sub(r"^botlang", "", tweet.text)
 
-            text = self.sentencer.translate(tweet.text)
+            text = self.sentencer.translate(mention)
             self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
     def on_timeline(self, tweet, prefix):
