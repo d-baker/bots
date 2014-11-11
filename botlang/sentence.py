@@ -50,8 +50,8 @@ class Sentence:
             if stripped_word:
 
                 # keep smileys, entities
-                if re.search(r"((:|;).{1,3})|(\w{1,2}(:|;))", word) or (word in entities):
-                    print ("probably a smiley, keep it");
+                if re.search(r"(^|[^@\w])@(\w{1,15})\b", word) or re.search(r"((:|;).{1,3})|(\w{1,2}(:|;))", word) or (word in entities):
+                    print ("probably a smiley or @-mention, keep it");
                     translation = word
 
                 elif re.search(r"'[a-zA-Z]$", word):
