@@ -15,9 +15,11 @@ from botlang import Bot
 
 class Sentence:
     def __init__(self):
-        self.dictionary = {}
+        pass
+
+    def load_dict(self):
         with open("dictionary.json") as fp:
-            self.dictionary = json.load(fp)
+            return json.load(fp)
 
     def translate(self, sentence):
         entities = ["&amp;", "&lt;", "&gt;"]
@@ -35,7 +37,7 @@ class Sentence:
             stripped_word = re.sub(r"[^a-zA-Z]", "", word)
 
             # find the word and translate it
-            for definition in self.dictionary:
+            for definition in self.load_dict():
                 if definition["english"] == stripped_word:
                     translation = definition["bottish"]
 
@@ -71,6 +73,7 @@ class Sentence:
         print("Bottish: " + text)
         return(text)
 
+    #pick a random sentence from a file
     def get_sentence(self):
         sentences = open("resources/botlang-sentences.txt").readlines()
         s = random.choice(sentences)
@@ -78,4 +81,4 @@ class Sentence:
 
 if __name__ == "__main__":
     sentence = Sentence()
-    sentence.get_sentence()
+    #sentence.translate("foobar")
