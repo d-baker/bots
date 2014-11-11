@@ -81,4 +81,4 @@ class Sentence:
 
 if __name__ == "__main__":
     sentence = Sentence()
-    sentence.translate("MEOW hi")
+    sentence.translate("don't")
