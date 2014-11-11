@@ -27,7 +27,7 @@ class Sentence:
         bot = Bot()
 
         print ("English: " + sentence)
-        sentence = list(sentence.split())
+        sentence = list(sentence.lower().split())
         text = ""
 
         for word in sentence:
@@ -81,4 +81,4 @@ class Sentence:
 
 if __name__ == "__main__":
     sentence = Sentence()
-    #sentence.translate("foobar")
+    sentence.translate("MEOW hi")
