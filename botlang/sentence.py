@@ -43,7 +43,7 @@ class Sentence:
 
             # no existing translation? bot learns a new word!
             if translation == "N/A":
-                translation = (bot.run(bot.gen_bottish(), word))[0]
+                translation = (bot.run(bot.gen_bottish(), stripped_word))[0]
 
             # if the "word" was only punctuation it'll be empty
             # so only concatenate translation if there's a word
