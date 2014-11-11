@@ -101,7 +101,7 @@ class Botlang (TwitterBot):
         if diff.seconds <= 120:
             #mention = re.sub(r'(^|[^@\w])@(\w{1,15})\b', "", tweet.text)
 
-            text = self.sentencer.translate(mention)
+            text = self.sentencer.translate(tweet.text)
             self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
     def on_timeline(self, tweet, prefix):
