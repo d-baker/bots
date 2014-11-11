@@ -81,4 +81,4 @@ class Sentence:
 
 if __name__ == "__main__":
     sentence = Sentence()
-    sentence.translate("don't")
+    sentence.translate(re.sub(r"^@botlang ", "", "@botlang hi"))
