@@ -1,5 +1,6 @@
 import tweepy
-from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+#from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 from datetime import datetime, date
 import random
 
