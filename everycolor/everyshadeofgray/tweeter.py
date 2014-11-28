@@ -41,7 +41,7 @@ def tweet():
             break
 
     api = authorize()
-    api.update_with_media(color[1:] + ".png", status=color)
+    api.update_with_media("grayscale/" + color[1:] + ".png", status=color)
 
     with open ("tweeted_colors.txt", "a") as fp:
         fp.write(color + "\n")

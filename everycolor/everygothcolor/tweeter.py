@@ -1,6 +1,7 @@
 import tweepy
 from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 from datetime import datetime, date
+import random
 
 def authorize():
     auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
@@ -25,7 +26,7 @@ def tweet():
     with open ("gothscale.txt") as fp:
         colors = list(line.strip() for line in fp.readlines())
 
-    with open ("tweeted_colors.txt") as fp:
+    with open ("tweeted_colors.txt", "w+") as fp:
         tweeted_colors = list(line.strip() for line in fp.readlines())
 
     color = random.choice(colors)
@@ -40,11 +41,11 @@ def tweet():
             break
 
     api = authorize()
-    api.status_update_with_media(color[1:] + ".png", status=color)
+    api.update_with_media("gothscale/" + color[1:] + ".png", status=color)
 
     with open ("tweeted_colors.txt", "a") as fp:
         fp.write(color + "\n")
 
 if __name__ == "__main__":
-    #tweet()
-    log("hi")
+    tweet()
+    #log("hi")
