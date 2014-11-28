@@ -87,5 +87,5 @@ if __name__ == "__main__":
     goth.gen_gothscale()
     gray.gen_grayscale()
 
-    #everygothcolor()
+    everygothcolor()
     everyshadeofgray()
