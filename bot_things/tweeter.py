@@ -6,8 +6,8 @@ from bot_things import gen
 import random
 import re
 import datetime
-from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
-#from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+#from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 
 class BotThings(TwitterBot):
     def bot_init(self):
