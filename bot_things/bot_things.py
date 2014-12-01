@@ -38,7 +38,7 @@ def gen():
 
         # high chance of using "bot"
         if random.random() > 0.02:
-            phrase = "bot " + word
+            phrase = "bot " + word.encode("utf-8")
         # small chance of using something else
         else:
             phrase = random.choice(special_prefixes) + " " + word
