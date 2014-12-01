@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # -*- coding: utf-8 -*- #
 
 from __future__ import unicode_literals
@@ -7,7 +6,8 @@ from bot_things import gen
 import random
 import re
 import datetime
-from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
+#from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 
 class BotThings(TwitterBot):
     def bot_init(self):
@@ -84,7 +84,7 @@ class BotThings(TwitterBot):
         now = datetime.datetime.utcnow()
         diff = now - tweet_time # tweet age
 
-        text = gen()
+        text = gen().encode("utf-8")
 
         # only reply to mentions in last 2 mins
         if diff.seconds <= 120:
