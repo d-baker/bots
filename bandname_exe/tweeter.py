@@ -84,7 +84,7 @@ class BotBand (TwitterBot):
             while text in tweeted:
                 text = gen()
 
-        self.post_tweet(text)
+        self.post_tweet(text.decode("utf-8"))
         with open("resources/tweeted.txt", "a") as fp:
             fp.write(text + "\n")
 
