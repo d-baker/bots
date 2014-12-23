@@ -1,6 +1,5 @@
 import twitter
 import time
-import random
 #from resources.testconfig import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 
