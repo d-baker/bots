@@ -1,7 +1,7 @@
 import random
 from tweeter import tweet
 
-suffixes = ["saurus", "don", "ilia", "sauriform", "raptor", "ceratops", "saura", "ryx"]
+suffixes = ["saurus", "saur", "don", "ilia", "sauriform", "raptor", "ceratops", "saura", "ryx"]
 prefixes = []
 
 with open ("resources/dinosaurs.txt") as fp:
