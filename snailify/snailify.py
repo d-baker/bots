@@ -8,6 +8,11 @@ def is_noun(word):
     return tag(word)[0][1] == "NN"
 
 def snailify(text):
+    # deal with HTML entities
+    text = text.replace("&lt;", "<")
+    text = text.replace("&gt;", ">")
+    text = text.replace("&amp;", "&")
+
     snails = ["🐌", "snail"]
     questioning_snails = ["🐌?", "snail?"]
 
