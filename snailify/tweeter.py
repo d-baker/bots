@@ -8,6 +8,7 @@ from snailify import snailify, just_snails
 from resources.config import CONSUMER_KEY, CONSUMER_SECRET, TOKEN, SECRET
 import re
 import logging
+import datetime
 
 class MyTwitterBot(TwitterBot):
     def bot_init(self):
