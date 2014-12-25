@@ -97,15 +97,13 @@ class MyTwitterBot(TwitterBot):
 
     def on_mention(self, tweet, prefix):
         tweet_text = re.sub(r'(^|[^@\w])@(\w{1,15})\b', "", tweet.text)
-        text = snailify(tweet_text)
-        prefixed_text = prefix + ' ' + text
+        text = snailify(tweet_text[1:])
         self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
     def on_timeline(self, tweet, prefix):
         if random.random() < 0.2:
             tweet_text = re.sub(r'(^|[^@\w])@(\w{1,15})\b', "", tweet.text)
-            text = snailify(tweet_text)
-            prefixed_text = prefix + ' ' + text
+            text = snailify(tweet_text[1:])
             self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
 
