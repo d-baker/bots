@@ -104,13 +104,13 @@ class MyTwitterBot(TwitterBot):
         # only reply to mentions in last 2 mins
         if diff.seconds <= 120:
             tweet_text = re.sub(r'^@(\w{1,15})\b', "", tweet.text)
-            text = snailify(tweet_text[1:])
+            text = snailify(tweet_text)
             self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
     def on_timeline(self, tweet, prefix):
         if random.random() < 0.2:
             tweet_text = re.sub(r'^@(\w{1,15})\b', "", tweet.text)
-            text = snailify(tweet_text[1:])
+            text = snailify(tweet_text)
             self.post_tweet(prefix + ' ' + text, reply_to=tweet)
 
 
