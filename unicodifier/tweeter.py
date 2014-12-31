@@ -87,7 +87,7 @@ class MyTwitterBot(TwitterBot):
         
 
     def on_mention(self, tweet, prefix):
-        mention = re.sub(r'(^|[^@\w])@(\w{1,15})\b', "", tweet.text)
+        mention = re.sub(r'^@(\w{1,15})\b', "", tweet.text).replace("@unicodifier", "")
         text = unicodify(mention)
         prefixed_text = prefix + ' ' + text
         self.post_tweet(prefix + ' ' + text, reply_to=tweet)
