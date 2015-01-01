@@ -2,10 +2,22 @@ from syntax import PARENTHESES, OPERATORS, DELIMS
 import random
 
 def generate_condition():
-    return "{x1}{comp}{x2}".format(
-        x1 = str(random.randint(1, 100)), 
-        comp = random.choice(OPERATORS["comparison"]),
-        x2 = str(random.randint(1, 100))
+    def generate_comparison():
+        return "{x1} {comp} {x2}".format(
+            x1 = str(random.randint(1, 100)), 
+            comp = random.choice(OPERATORS["comparison"]),
+            x2 = str(random.randint(1, 100))
+        )
+
+    def generate_logic():
+        return " {comp} {logic} ".format(
+            comp = generate_comparison(),
+            logic = random.choice(OPERATORS["logical"])
+        )
+
+    return random.choice([
+        generate_comparison(), 
+        generate_logic() * random.randint(1, 3) + generate_comparison()]
     )
 
 def generate_body(TABS):
@@ -18,7 +30,7 @@ def generate_body(TABS):
             __delim = random.choice(["", random.choice(DELIMS)])
         )
 
-def if_statement(TABS):
+def if_statement(TABS=0):
     pattern = "if {__open_p}{condition}{__close_p} {__open_block}\n{body}\n{tabs}{__close_block}"
 
     __OPEN_P = random.choice(PARENTHESES["open"])
@@ -50,7 +62,7 @@ def if_statement(TABS):
 
 def gen():
     functions = [
-        if_statement(0)
+        if_statement()
     ]
 
     return random.choice(functions)
