@@ -37,18 +37,43 @@ OPERATORS = {
         ">",
         "<",
         ">=",
-        "<="
+        "<=",
+        "!==",
+        "!===",
+        "!>",
+        "!<",
+        "!>=",
+        "!<="
     ],
     "logical": [
         "&&",
         "||",
-        "!",
         "and",
         "or",
-        "not"
     ]
 }
 
 DELIMS = [
     ";",
+]
+
+VARNAMES = [
+    "foo",
+    "bar", 
+    "baz",
+    "bam",
+    "x", 
+    "y",
+    "z",
+    "n",
+    "num", 
+    "counter"
+]
+
+TYPES = [
+    "string",
+    "int",
+    "float",
+    "double",
+    "array"
 ]

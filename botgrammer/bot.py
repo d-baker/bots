@@ -1,23 +1,23 @@
-from syntax import PARENTHESES, OPERATORS, DELIMS
+from syntax import PARENTHESES, OPERATORS, DELIMS, VARNAMES, TYPES
 import random
 
 def generate_condition():
     def generate_comparison():
         return "{x1} {comp} {x2}".format(
-            x1 = str(random.randint(1, 100)), 
+            x1 = random.choice( [ random.choice(VARNAMES), str(random.randint(1, 100)) ] ), 
             comp = random.choice(OPERATORS["comparison"]),
-            x2 = str(random.randint(1, 100))
+            x2 = random.choice( [ random.choice(VARNAMES), str(random.randint(1, 100)) ] ), 
         )
 
     def generate_logic():
-        return " {comp} {logic} ".format(
+        return "{comp} {logic} ".format(
             comp = generate_comparison(),
             logic = random.choice(OPERATORS["logical"])
         )
 
     return random.choice([
         generate_comparison(), 
-        generate_logic() * random.randint(1, 3) + generate_comparison()]
+        generate_logic() * random.randint(1, 2) + generate_comparison()]
     )
 
 def generate_body(TABS):
