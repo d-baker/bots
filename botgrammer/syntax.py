@@ -1,3 +1,7 @@
+import random
+
+ANIMALS = list(open("animals.txt").read().split())
+
 PARENTHESES = {
     "open": [
         "{",
@@ -67,7 +71,12 @@ VARNAMES = [
     "z",
     "n",
     "num", 
-    "counter"
+    "counter",
+    random.choice(ANIMALS),
+    random.choice(ANIMALS),
+    random.choice(ANIMALS),
+    random.choice(ANIMALS),
+    random.choice(ANIMALS)
 ]
 
 TYPES = [

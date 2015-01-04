@@ -20,18 +20,21 @@ def generate_condition():
         generate_logic() * random.randint(1, 2) + generate_comparison()]
     )
 
-def generate_body(TABS):
-    TABS += 1
-    if random.random() < 0.5:
-        return "\t" * TABS + if_statement(TABS)
-    else:
-        return "{tabs}return x{__delim}".format(
-            tabs = "\t" * TABS,
-            __delim = random.choice(["", random.choice(DELIMS)])
-        )
 
-def if_statement(TABS=0):
-    pattern = "if {__open_p}{condition}{__close_p} {__open_block}\n{body}\n{tabs}{__close_block}"
+def conditional_statement(keyword="if", TABS=0):
+
+    def generate_body(TABS):
+        TABS += 1
+        if random.random() < 0.5:
+            return "\t" * TABS + conditional_statement("if", TABS)
+        else:
+            return "{tabs}return {var}{__delim}".format(
+                tabs = "\t" * TABS,
+                var = random.choice( [ random.choice(VARNAMES), str(random.randint(1, 100)) ] ),
+                __delim = random.choice(["", random.choice(DELIMS)])
+            )
+
+    pattern = "{k} {__open_p}{condition}{__close_p} {__open_block}\n{body}\n{tabs}{__close_block}"
 
     __OPEN_P = random.choice(PARENTHESES["open"])
     while __OPEN_P == ":":
@@ -49,6 +52,7 @@ def if_statement(TABS=0):
         __CLOSE_BLOCK = ""
 
     construct = pattern.format(
+        k = keyword,
         __open_p = __OPEN_P,
         condition = CONDITION,
         __close_p = __CLOSE_P,
@@ -58,14 +62,28 @@ def if_statement(TABS=0):
         __close_block = __CLOSE_BLOCK
     )
 
+    if random.random() < 0.3:
+        # TODO why is the indentation for this bit too deep?
+        construct += " " + conditional_statement(random.choice(["elif", "else if"]), TABS+1)
+
     return construct
+
+def chars_ok(code):
+    if len(code) >= 140:
+        return False
+    return True
 
 def gen():
     functions = [
-        if_statement()
+        conditional_statement()
     ]
 
     return random.choice(functions)
 
 if __name__ == "__main__":
-    print gen()
+    code = gen()
+    while not (chars_ok(code)):
+        print "too many chars"
+        code = gen()
+    else:
+        print code
