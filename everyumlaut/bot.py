@@ -7,7 +7,7 @@ def bot():
     current_word = ""
     with open ("resources/everyword.txt") as fp:
         current_word = fp.readline().strip().decode("utf-8")
-    tweet(umlautify(current_word[::-1]))
+    tweet(umlautify(current_word))
     # if tweeting fails the current word shouldn't get deleted
     with open("resources/everyword.txt", "r") as fin:
         words = fin.read().splitlines(True)
