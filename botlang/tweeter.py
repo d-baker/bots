@@ -99,7 +99,8 @@ class Botlang (TwitterBot):
 
         # only reply to mentions in last 2 mins
         if diff.seconds <= 120:
-            mention = tweet.text.replace("@botlang", "botlang")
+            mention = re.sub("^@botlang", "", tweet.text)
+            mention = mention.replace("@botlang", "botlang")
 
             text = self.sentencer.translate(mention)
             self.post_tweet(prefix + ' ' + text, reply_to=tweet)
