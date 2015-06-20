@@ -99,7 +99,13 @@ class Botlang (TwitterBot):
 
         # only reply to mentions in last 2 mins
         if diff.seconds <= 120:
+            # remove self mentions at the start
             mention = re.sub("^@botlang", "", tweet.text)
+
+            # remove self mentions at the end
+            mention = re.sub("@botlang$", "", tweet.text)
+
+            # keep and translate self mentions in the middle
             mention = mention.replace("@botlang", "botlang")
 
             text = self.sentencer.translate(mention)
