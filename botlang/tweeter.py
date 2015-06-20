@@ -103,7 +103,7 @@ class Botlang (TwitterBot):
             mention = re.sub("^@botlang", "", tweet.text)
 
             # remove self mentions at the end
-            mention = re.sub("@botlang$", "", tweet.text)
+            mention = re.sub("@botlang$", "", mention)
 
             # keep and translate self mentions in the middle
             mention = mention.replace("@botlang", "botlang")
