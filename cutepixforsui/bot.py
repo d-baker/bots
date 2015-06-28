@@ -28,7 +28,7 @@ def get_hashtag_tweets():
 
         for i in range(0, len(tweets)):
             if tweets[i] != None:
-                if tweets[i].author.id_str in trusted_users and tweets[i].id_str not in already_tweeted:
+                if tweets[i].entities["urls"] != [] and tweets[i].author.id_str in trusted_users and tweets[i].id_str not in already_tweeted:
                     all_tweets += [tweets[i].id]
 
     return all_tweets
