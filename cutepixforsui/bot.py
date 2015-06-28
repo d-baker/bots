@@ -10,7 +10,9 @@ auth.set_access_token(TOKEN, SECRET)
 api = tweepy.API(auth)
 
 # seconds between each RT
-INTERVAL = 30
+RT_INTERVAL = 180 # 3 mins
+# seconds between each search update
+UPDATE_INTERVAL = 7200 # 2 hrs
 
 def get_hashtag_tweets():
     already_tweeted = open("resources/tweeted.dat").readlines()
@@ -43,8 +45,8 @@ def run():
             log("last retweet ID written to file")
             fp.write(just_tweeted + "\n")
 
-        log("sleeping for " + INTERVAL + " seconds")
-        time.sleep(INTERVAL)
+        log("sleeping for " + RT_INTERVAL + " seconds between RTs")
+        time.sleep(RT_INTERVAL)
 
 def log(message):
     date = datetime.utcnow().strftime("%Y-%m-%e %T") 
@@ -54,3 +56,6 @@ if __name__ == "__main__":
     log("bot initialised")
     while True:
         run()
+
+        log("sleeping for " + UPDATE_INTERVAL + " seconds between search updates")
+        time.sleep(UPDATE_INTERVAL)
