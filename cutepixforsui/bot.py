@@ -38,24 +38,29 @@ def run():
     log("retrieved latest tweets")
 
     while (tweets != []):
-        just_tweeted = api.retweet(tweets.pop())
-        log("retweeted a tweet")
+        try:
+            just_tweeted = api.retweet(id=tweets.pop(0))
+            log("retweeted a tweet")
 
-        with open("resources/tweeted.dat", "a") as fp:
-            log("last retweet ID written to file")
-            fp.write(just_tweeted + "\n")
+            with open("resources/tweeted.dat", "a") as fp:
+                log("last retweet ID written to file")
+                fp.write(just_tweeted.id_str + "\n")
+                break
 
-        log("sleeping for " + RT_INTERVAL + " seconds between RTs")
-        time.sleep(RT_INTERVAL)
+            log("sleeping for " + str(RT_INTERVAL) + " seconds between RTs")
+            time.sleep(RT_INTERVAL)
+
+        except tweepy.error.TweepError as e:
+            log("an error occurred, skipping")
 
 def log(message):
     date = datetime.utcnow().strftime("%Y-%m-%e %T") 
-    return "{} | {}".format(date, message)
+    print "{} | {}".format(date, message)
 
 if __name__ == "__main__":
     log("bot initialised")
     while True:
         run()
 
-        log("sleeping for " + UPDATE_INTERVAL + " seconds between search updates")
+        log("sleeping for " + str(UPDATE_INTERVAL) + " seconds between search updates")
         time.sleep(UPDATE_INTERVAL)
