@@ -55,7 +55,7 @@ def run():
 
 def log(message):
     date = datetime.utcnow().strftime("%Y-%m-%e %T") 
-    print "{} | {}".format(date, message)
+    print ("{} | {}".format(date, message))
 
 if __name__ == "__main__":
     log("bot initialised")
