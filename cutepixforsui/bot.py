@@ -12,7 +12,7 @@ api = tweepy.API(auth)
 # seconds between each RT
 RT_INTERVAL = 180 # 3 mins
 # seconds between each search update
-UPDATE_INTERVAL = 7200 # 2 hrs
+UPDATE_INTERVAL = 3600 # 1 hr
 
 def get_hashtag_tweets():
     already_tweeted = open("resources/tweeted.dat").readlines()
@@ -24,12 +24,12 @@ def get_hashtag_tweets():
     all_tweets = []
 
     for tag in hashtags:
-        tweets = api.search(q=tag)
+        tweets = api.search(q=tag, rpp=10)
 
         for i in range(0, len(tweets)):
             if tweets[i] != None:
                 if tweets[i].entities["urls"] != [] and tweets[i].author.id_str in trusted_users and tweets[i].id_str not in already_tweeted:
-                    all_tweets += [tweets[i].id]
+                    all_tweets += [int(tweets[i].id_str)]
 
     return all_tweets
 
@@ -39,26 +39,33 @@ def run():
 
     while (tweets != []):
         try:
-            just_tweeted = api.retweet(id=tweets.pop(0))
-            log("retweeted a tweet")
+            print (tweets[0])
+            api.retweet(id=tweets[0])
+            log("retweeted a tweet with ID " + str(tweets[0]))
 
             with open("resources/tweeted.dat", "a") as fp:
+                fp.write(str(tweets[0]) + "\n")
+                tweets.pop(0)
                 log("last retweet ID written to file")
-                fp.write(just_tweeted.id_str + "\n")
-                break
 
             log("sleeping for " + str(RT_INTERVAL) + " seconds between RTs")
             time.sleep(RT_INTERVAL)
 
         except tweepy.error.TweepError as e:
             log("an error occurred, skipping")
+            tweets.pop(0)
 
 def log(message):
     date = datetime.utcnow().strftime("%Y-%m-%e %T") 
     print ("{} | {}".format(date, message))
 
+def test(tweetID):
+    api.retweet(id=tweetID)
+    log("RT'd")
+
 if __name__ == "__main__":
     log("bot initialised")
+
     while True:
         run()
 
