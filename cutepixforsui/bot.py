@@ -16,8 +16,11 @@ UPDATE_INTERVAL = 3600 # 1 hr
 
 def get_hashtag_tweets():
     already_tweeted = open("resources/tweeted.dat").readlines()
-    sui_id = api.get_user(screen_name="swayandsea").id_str
-    trusted_users = api.followers_ids(screen_name="swayandsea") + [sui_id]
+    #sui_id = api.get_user(screen_name="swayandsea").id_str
+    #trusted_users = api.followers_ids(screen_name="swayandsea") + [sui_id]
+
+    trusted_users = [name.strip() for name in open("resources/trusted_users.dat").readlines()]
+    print trusted_users
 
     hashtags=["#catpicturesforsui", "#catpixforsui", "#catpix4sui", "#cuteanimalsforsui"]
 
@@ -28,7 +31,7 @@ def get_hashtag_tweets():
 
         for i in range(0, len(tweets)):
             if tweets[i] != None:
-                if tweets[i].entities["urls"] != [] and tweets[i].author.id_str in trusted_users and tweets[i].id_str not in already_tweeted:
+                if tweets[i].entities["urls"] != [] and tweets[i].author.screen_name in trusted_users and tweets[i].id_str not in already_tweeted:
                     all_tweets += [int(tweets[i].id_str)]
 
     return all_tweets
