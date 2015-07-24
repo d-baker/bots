@@ -20,7 +20,6 @@ def get_hashtag_tweets():
     #trusted_users = api.followers_ids(screen_name="swayandsea") + [sui_id]
 
     trusted_users = [name.strip() for name in open("resources/trusted_users.dat").readlines()]
-    print trusted_users
 
     hashtags=["#catpicturesforsui", "#catpixforsui", "#catpix4sui", "#cuteanimalsforsui"]
 
