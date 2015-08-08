@@ -36,12 +36,17 @@ def get_hashtag_tweets():
     return all_tweets
 
 def run():
-    tweets = get_hashtag_tweets()
-    log("retrieved latest tweets")
+    tweets = []
+
+    try:
+        tweets = get_hashtag_tweets()
+        log("retrieved latest tweets")
+    except:
+        log("an error occurred while attempting to retrieve tweets")
+        return
 
     while (tweets != []):
         try:
-            print (tweets[0])
             api.retweet(id=tweets[0])
             log("retweeted a tweet with ID " + str(tweets[0]))
 
@@ -54,7 +59,7 @@ def run():
             time.sleep(RT_INTERVAL)
 
         except tweepy.error.TweepError as e:
-            log("an error occurred, skipping")
+            log("an error occurred while trying to RT, skipping")
             tweets.pop(0)
 
 def log(message):
