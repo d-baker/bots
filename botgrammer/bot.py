@@ -20,6 +20,11 @@ def generate_condition():
         generate_logic() * random.randint(1, 2) + generate_comparison()]
     )
 
+""" TODO 
+- do/while loop
+- while loop
+- for loop
+- variable assignment statements
 
 def conditional_statement(keyword="if", TABS=0):
 
@@ -64,6 +69,7 @@ def conditional_statement(keyword="if", TABS=0):
 
     if random.random() < 0.3:
         # TODO why is the indentation for this bit too deep?
+        # also plain "else" can't be followed by a condition
         construct += " " + conditional_statement(random.choice(["elif", "else if"]), TABS+1)
 
     return construct

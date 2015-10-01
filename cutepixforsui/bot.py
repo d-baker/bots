@@ -1,5 +1,7 @@
  #!/usr/bin/env python3
 
+import os
+import random
 import tweepy
 import time
 from datetime import datetime
@@ -36,6 +38,9 @@ def get_hashtag_tweets():
     return all_tweets
 
 def run():
+    post_scheduled_image()
+
+    """
     tweets = []
 
     try:
@@ -61,6 +66,7 @@ def run():
         except tweepy.error.TweepError as e:
             log("an error occurred while trying to RT, skipping")
             tweets.pop(0)
+     """
 
 def log(message):
     date = datetime.utcnow().strftime("%Y-%m-%e %T") 
@@ -69,6 +75,15 @@ def log(message):
 def test(tweetID):
     api.retweet(id=tweetID)
     log("RT'd")
+
+def post_scheduled_image():
+    scheduled_status = ["meow", ":3", "😻", "😺"]
+    image_files = os.listdir("resources/scheduled_images")
+
+    if len(image_files) > 0:
+        photo = "resources/scheduled_images/" + image_files[0]
+        api.update_with_media(filename=photo, status=random.choice(scheduled_status))
+        os.remove(photo)
 
 if __name__ == "__main__":
     log("bot initialised")
