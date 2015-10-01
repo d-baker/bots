@@ -18,8 +18,6 @@ UPDATE_INTERVAL = 3600 # 1 hr
 
 def get_hashtag_tweets():
     already_tweeted = open("resources/tweeted.dat").readlines()
-    #sui_id = api.get_user(screen_name="swayandsea").id_str
-    #trusted_users = api.followers_ids(screen_name="swayandsea") + [sui_id]
 
     trusted_users = [name.strip() for name in open("resources/trusted_users.dat").readlines()]
 
@@ -38,9 +36,9 @@ def get_hashtag_tweets():
     return all_tweets
 
 def run():
+    log("attempting scheduled image post")
     post_scheduled_image()
 
-    """
     tweets = []
 
     try:
@@ -66,7 +64,6 @@ def run():
         except tweepy.error.TweepError as e:
             log("an error occurred while trying to RT, skipping")
             tweets.pop(0)
-     """
 
 def log(message):
     date = datetime.utcnow().strftime("%Y-%m-%e %T") 
@@ -84,6 +81,8 @@ def post_scheduled_image():
         photo = "resources/scheduled_images/" + image_files[0]
         api.update_with_media(filename=photo, status=random.choice(scheduled_status))
         os.remove(photo)
+
+    log("scheduled image posted")
 
 if __name__ == "__main__":
     log("bot initialised")
