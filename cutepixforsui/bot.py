@@ -74,7 +74,7 @@ def test(tweetID):
     log("RT'd")
 
 def post_scheduled_image():
-    scheduled_status = ["meow", ":3", "😻", "😺", "😸", "😼", "😽", "🙀", "😹", "🐯", "🐱", "🐈", "🐅", "🐆"]
+    scheduled_status = ["meow", ":3", "what a weird umbrella", "strange house here", "what a quaint piglet!", "wow, what a beautiful lamp!", "what an unusual library", "😻", "😺", "😸", "😼", "😽", "🙀", "😹", "🐯", "🐱", "🐈", "🐅", "🐆"]
     image_files = os.listdir("resources/scheduled_images")
 
     if len(image_files) > 0:
