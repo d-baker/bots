@@ -93,6 +93,8 @@ def post_scheduled_image():
      "lol men",
      "white ppl r such a lol",
      "insert misandry here",
+     "#ThisIsWhatAnEngineerLooksLike",
+     "#FeministsAreUgly? more like... cats",
      "😻", "😺", "😸", "😼", "😽", "🙀", "😹", "🐯", "🐱", "🐈", "🐅", "🐆"]
     image_files = os.listdir("resources/scheduled_images")
 
