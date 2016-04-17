@@ -36,7 +36,6 @@ SUNS = [
     "⛅",
     "☀",
     "☼",
-    "🌅", # sunrise
     "🌤", # white sun with small cloud
     "🌦", # white sun behind cloud with rain
     "🌥" # white sun behind cloud
