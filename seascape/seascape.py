@@ -1,8 +1,7 @@
-#* encoding: utf-8 *#
-
 #! /usr/bin/env python3
 
 import random
+from tweeter import tweet
 
 LINE_LENGTH = 20
 SEA_LINES = 4
@@ -59,7 +58,8 @@ STARS = {
     "✦" : 30,
     "✧" : 20,
     "*" : 40,
-    "." : 60,
+    "." : 30,
+    "˚" : 30
     #"★" : 15,
     #"☆" : 7,
     #"✭" : 7,
@@ -157,4 +157,5 @@ def generate_seascape():
     return seascape
 
 
-print (generate_seascape())
+if __name__ == "__main__":
+    tweet( generate_seascape() )
