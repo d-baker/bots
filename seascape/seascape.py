@@ -14,14 +14,16 @@ MOON_HEIGHT = 0
 
 SUN_REPETITIONS = 1 # until we land on some weird planet with multiple suns
 MOON_REPETITIONS = 1 # until we land on some weird planet with multiple moons
-STAR_REPETITIONS = 4
 
+# number of times to repeat special chars on each line
+STAR_REPETITIONS = 4
 BIG_WAVE_REPETITIONS = 5
 FLOATABLES_REPETITIONS = 1 # only want 1 of each floatable on a line for now
 
 WAVE_CHAR = "~";
 BIG_WAVE_CHAR = "〜"
 
+# weighted
 FLOATABLES = {
     "🛥" : 10, # boat
     "🌊" : 20, # massive wave
@@ -54,6 +56,7 @@ MOONS = [
     "🌘"
 ]
 
+# weighted
 STARS = {
     "✦" : 30,
     "✧" : 20,
