@@ -76,8 +76,6 @@ STARS = {
 # add a special character at a random position, a given number of times
 # mostly used with a repetition of 1 for single objects like sun or moon
 def add_char(line, char, repetitions):
-    repetitions = repetitions
-
     for rep in range(repetitions):
         extra_position = random.choice(range(LINE_LENGTH))
         line = line[ : extra_position ] + char + line[ (extra_position+1) : ]
@@ -86,8 +84,6 @@ def add_char(line, char, repetitions):
 
 # add big waves to a line
 def add_big_waves(line, repetitions):
-    repetitions = repetitions
-
     for rep in range(repetitions):
         extra_position = random.choice(range(LINE_LENGTH))
         line = line[ : extra_position ] + BIG_WAVE_CHAR + line[ (extra_position+1) : ]
