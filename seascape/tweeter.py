@@ -8,7 +8,8 @@ def tweet(s):
     t = twitter.Twitter(auth=auth)
 
     charfix = "." # fix twitter whitespace bug
-    s = charfix + s[1:] 
+    if s[:1] == " ":
+        s = charfix + s[1:] 
 
     if len(s) < 140:
         print("Tweeting...")
