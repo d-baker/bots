@@ -1,6 +1,0 @@
-NOTE this is incomplete, as the bot is incomplete.
-
-adjectives.txt
-plural.txt
-singular.txt
-verbs.txt 
